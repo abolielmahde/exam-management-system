@@ -62,3 +62,7 @@ Teachers set a duration in minutes when creating an exam. Students see the time 
 
 Additional Feature - Student Average:
 The project now includes an analytics feature. The teacher can view class average, highest grade, lowest grade, active students, and each student's grade compared to the average. The student can view a personal average in the Results page. This feature supports the use case requirement and demonstrates calculation logic inside the mock service flow.
+
+Average Graph Update:
+The teacher submissions page now includes a visual bar graph that compares every student grade against the class average. Grades above or equal to the average are shown as one style, and grades below the average are shown as another style.
+The student results page now includes a personal graph that compares the student's submitted grades against their personal average.

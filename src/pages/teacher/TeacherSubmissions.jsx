@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, GraduationCap, TrendingDown, TrendingUp } from 'lucide-react';
+import { BarChart3, GraduationCap, LineChart, TrendingDown, TrendingUp } from 'lucide-react';
 import { MockApiDbService } from '../../services/MockApiDbService';
 
 export default function TeacherSubmissions({ user }) {
@@ -27,6 +27,41 @@ export default function TeacherSubmissions({ user }) {
         <div className="card stat-card compact"><TrendingUp /><h2>{highestGrade}</h2><p>Highest Grade</p></div>
         <div className="card stat-card compact"><TrendingDown /><h2>{lowestGrade}</h2><p>Lowest Grade</p></div>
         <div className="card stat-card compact"><GraduationCap /><h2>{uniqueStudents}</h2><p>Active Students</p></div>
+      </div>
+
+      <div className="card chart-card">
+        <div className="chart-header">
+          <div>
+            <p className="eyebrow">Average graph</p>
+            <h2>Student Grades vs Class Average</h2>
+            <p className="muted">Each bar represents a submitted exam grade. The blue line shows the class average.</p>
+          </div>
+          <LineChart />
+        </div>
+
+        {submissions.length > 0 ? (
+          <div className="bar-chart" style={{ '--average': classAverage }}>
+            <div className="average-line"><span>Average {classAverage}</span></div>
+            {submissions.map(submission => {
+              const student = users.find(item => item.id === submission.studentId);
+              const exam = exams.find(item => item.id === submission.examId);
+              const grade = Number(submission.grade);
+              return (
+                <div className="bar-item" key={`chart-${submission.id}`}>
+                  <div className="bar-wrap">
+                    <div className={grade >= classAverage ? 'bar above-average' : 'bar below-average'} style={{ height: `${Math.max(grade, 4)}%` }}>
+                      <span>{grade}</span>
+                    </div>
+                  </div>
+                  <p>{student?.fullName || 'Student'}</p>
+                  <small>{exam?.title || 'Exam'}</small>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="muted empty-table">No graph yet. The average graph will appear after students submit exams.</p>
+        )}
       </div>
 
       <div className="table-card card">

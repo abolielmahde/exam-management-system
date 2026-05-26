@@ -84,3 +84,9 @@ Teachers set a duration in minutes when creating an exam. Students see the time 
 
 Student Average Feature:
 The teacher can view the class average and compare every submission to the average. The student can view a personal average based on submitted exams.
+
+Average Graph Extension:
+Teacher --> View Student Submissions
+View Student Submissions --> View Class Average Graph
+Student --> View Results
+View Results --> View Personal Average Graph

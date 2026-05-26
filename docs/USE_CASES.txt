@@ -91,3 +91,13 @@ Flow:
 2. System loads all submissions for the logged-in student.
 3. System calculates the student's personal average grade.
 4. Student sees the average together with each submitted exam grade.
+
+Use Case: View Average Graph
+Actor: Teacher
+Goal: View student grades visually and compare each grade to the class average.
+Flow: The teacher opens Submissions, the system calculates class average, highest grade, lowest grade, and displays a bar graph with an average line.
+
+Use Case: View Personal Grade Graph
+Actor: Student
+Goal: View personal grade progress visually.
+Flow: The student opens Results, the system calculates the personal average and displays a graph comparing each submitted exam grade to the average.
