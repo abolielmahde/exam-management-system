@@ -14,26 +14,73 @@ Teacher:
 - View Teacher Dashboard
 - Create Exam
 - Add Questions
+- Set Exam Time Limit
 - Publish Exam
 - Close Exam
 - Delete Exam
 - View Student Submissions
+- View Class Average
+- View Highest and Lowest Grade
+- Compare Student Grade to Average
 - Logout
 
 Student:
 - Login
 - View Student Dashboard
 - Start Published Exam
+- Answer Timed Exam
 - Submit Exam
+- Auto Submit When Time Ends
 - View Results
+- View Personal Average
 - Logout
 
 System:
 - Validate Credentials
 - Save Data to Mock DB
 - Calculate Grade
+- Calculate Student Average
+- Calculate Class Average
 - Show Notifications
 
+ASCII USE CASE DIAGRAM:
+
+        +------------------------+
+        |        Guest           |
+        +------------------------+
+             | Register
+             | Login
+
+        +------------------------+
+        |       Teacher          |
+        +------------------------+
+             | Create Exam
+             | Set Time Limit
+             | Publish / Close Exam
+             | View Submissions
+             | View Class Average
+             | Compare Grades to Average
+
+        +------------------------+
+        |       Student          |
+        +------------------------+
+             | Start Exam
+             | Submit Exam
+             | Auto Submit on Timer End
+             | View Results
+             | View Personal Average
+
+        +------------------------+
+        |        System          |
+        +------------------------+
+             | Validate Login
+             | Save Mock DB Data
+             | Calculate Grades
+             | Calculate Averages
+             | Notify Users
 
 Time Limit Feature:
 Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
+
+Student Average Feature:
+The teacher can view the class average and compare every submission to the average. The student can view a personal average based on submitted exams.

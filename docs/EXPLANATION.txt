@@ -59,3 +59,6 @@ The project is intentionally modular. Components are responsible for UI. Service
 
 Time Limit Feature:
 Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
+
+Additional Feature - Student Average:
+The project now includes an analytics feature. The teacher can view class average, highest grade, lowest grade, active students, and each student's grade compared to the average. The student can view a personal average in the Results page. This feature supports the use case requirement and demonstrates calculation logic inside the mock service flow.

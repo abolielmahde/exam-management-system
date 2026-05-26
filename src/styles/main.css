@@ -380,3 +380,51 @@ tr:hover td { background: rgba(239, 246, 255, .55); }
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.04); }
 }
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.stat-card.compact {
+  min-height: 150px;
+  padding: 24px;
+}
+
+.stat-card.compact h2 {
+  font-size: 38px;
+}
+
+.positive {
+  color: #166534;
+  font-weight: 900;
+}
+
+.negative {
+  color: #b91c1c;
+  font-weight: 900;
+}
+
+.average-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-color: rgba(191, 219, 254, .9);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(239, 246, 255, .9));
+}
+
+.average-card svg {
+  color: #2563eb;
+}
+
+.average-card h2 {
+  font-size: 44px;
+  color: #1d4ed8;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .grid-4 { grid-template-columns: 1fr; }
+}

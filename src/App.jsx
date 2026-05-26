@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import NavigationMenu from './components/NavigationMenu';
 import Toast from './components/Toast';

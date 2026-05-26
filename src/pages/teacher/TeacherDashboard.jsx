@@ -1,3 +1,4 @@
+import React from 'react';
 import { ClipboardList, FileCheck2, UsersRound } from 'lucide-react';
 import { MockApiDbService } from '../../services/MockApiDbService';
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CheckCircle2, Lock, Trash2 } from 'lucide-react';
 import { MockApiDbService } from '../../services/MockApiDbService';
 import { NotifyService } from '../../services/NotifyService';

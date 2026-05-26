@@ -75,3 +75,19 @@ Flow:
 
 Time Limit Feature:
 Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
+
+USE CASE 10 - Teacher Views Student Average
+Actor: Teacher
+Flow:
+1. Teacher opens the Submissions page.
+2. System loads all submissions that belong to exams created by that teacher.
+3. System calculates class average, highest grade, lowest grade, and active students.
+4. Teacher reviews each student's grade compared to the class average.
+
+USE CASE 11 - Student Views Personal Average
+Actor: Student
+Flow:
+1. Student opens the Results page.
+2. System loads all submissions for the logged-in student.
+3. System calculates the student's personal average grade.
+4. Student sees the average together with each submitted exam grade.

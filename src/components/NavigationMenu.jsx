@@ -1,3 +1,4 @@
+import React from 'react';
 import { BookOpen, LogOut, UserRound } from 'lucide-react';
 import { AuthService } from '../services/AuthService';
 import { ConfigurationService } from '../services/ConfigurationService';

@@ -11,3 +11,8 @@ COMMIT LOG EXAMPLE FOR DEV BRANCH
 
 Important:
 Development should be done on dev, not on main.
+
+commit: add student average analytics and use case diagram update
+- Added class average, highest grade, lowest grade, and active student count to teacher submissions.
+- Added student personal average to the results page.
+- Updated use cases and use case diagram documentation.
