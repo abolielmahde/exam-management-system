@@ -77,3 +77,7 @@ CLASS NotifyService
 + success(message): void
 + error(message): void
 + info(message): void
+
+
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.

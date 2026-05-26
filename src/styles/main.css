@@ -351,3 +351,32 @@ tr:hover td { background: rgba(239, 246, 255, .55); }
   .card { padding: 24px; }
   .auth-card { padding: 30px; }
 }
+
+.exam-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 14px 0 22px;
+}
+
+.timer {
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+}
+
+.danger-timer {
+  background: linear-gradient(135deg, #dc2626, #f97316);
+  animation: pulseTimer 1s infinite;
+}
+
+@keyframes pulseTimer {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}

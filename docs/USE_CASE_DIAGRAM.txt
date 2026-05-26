@@ -33,3 +33,7 @@ System:
 - Save Data to Mock DB
 - Calculate Grade
 - Show Notifications
+
+
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.

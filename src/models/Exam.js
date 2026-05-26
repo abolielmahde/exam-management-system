@@ -1,10 +1,11 @@
 export class Exam {
-  constructor({ id, title, course, description, teacherId, questions = [], status = 'draft' }) {
+  constructor({ id, title, course, description, teacherId, questions = [], durationMinutes = 30, status = 'draft' }) {
     this.id = id;
     this.title = title;
     this.course = course;
     this.description = description;
     this.teacherId = teacherId;
+    this.durationMinutes = Number(durationMinutes) || 30;
     this.questions = questions;
     this.status = status;
     this.createdAt = new Date().toISOString();

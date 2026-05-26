@@ -71,3 +71,7 @@ Flow:
 1. Teacher opens Submissions page.
 2. System loads submissions related to the teacher's exams.
 3. Teacher sees student name, exam name, submission time, and grade.
+
+
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.

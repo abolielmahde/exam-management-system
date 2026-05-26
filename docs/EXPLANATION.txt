@@ -55,3 +55,7 @@ The project uses browser LocalStorage as a mock database. This satisfies the DB 
 
 Important note:
 The project is intentionally modular. Components are responsible for UI. Services are responsible for business logic and data operations.
+
+
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.

@@ -22,11 +22,12 @@ export default function StudentDashboard({ user, setSelectedExamId, setPage }) {
             <div className="card exam-card" key={exam.id}>
               <div className="card-topline">
                 <span className="badge published">Published</span>
-                <span className="muted small-text">{exam.questions.length} questions</span>
+                <span className="muted small-text">{exam.questions.length} questions · {exam.durationMinutes || 30} min</span>
               </div>
               <h2>{exam.title}</h2>
               <p><strong>Course:</strong> {exam.course}</p>
               <p>{exam.description || 'No description was added.'}</p>
+              <p><strong>Time Limit:</strong> {exam.durationMinutes || 30} minutes</p>
               <button disabled={done} className="primary" onClick={() => { setSelectedExamId(exam.id); setPage('take-exam'); }}>
                 <PlayCircle size={16} /> {done ? 'Already Submitted' : 'Start Exam'}
               </button>

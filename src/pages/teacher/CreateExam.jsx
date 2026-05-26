@@ -6,7 +6,7 @@ import { NotifyService } from '../../services/NotifyService';
 const createEmptyQuestion = () => ({ text: '', options: ['', '', '', ''], correctAnswer: 0 });
 
 export default function CreateExam({ user, setPage }) {
-  const [exam, setExam] = useState({ title: '', course: '', description: '', questions: [createEmptyQuestion()] });
+  const [exam, setExam] = useState({ title: '', course: '', description: '', durationMinutes: 30, questions: [createEmptyQuestion()] });
 
   const updateQuestion = (index, patch) => {
     const questions = exam.questions.map((question, i) => i === index ? { ...question, ...patch } : question);
@@ -33,7 +33,7 @@ export default function CreateExam({ user, setPage }) {
 
   const submit = event => {
     event.preventDefault();
-    MockApiDbService.createExam({ ...exam, teacherId: user.id });
+    MockApiDbService.createExam({ ...exam, durationMinutes: Number(exam.durationMinutes) || 30, teacherId: user.id });
     NotifyService.success('Exam saved as draft');
     setPage('teacher-exams');
   };
@@ -46,6 +46,7 @@ export default function CreateExam({ user, setPage }) {
         <div className="form-row">
           <label>Exam Title<input value={exam.title} onChange={event => setExam({ ...exam, title: event.target.value })} required /></label>
           <label>Course<input value={exam.course} onChange={event => setExam({ ...exam, course: event.target.value })} required /></label>
+          <label>Time Limit (minutes)<input type="number" min="1" max="240" value={exam.durationMinutes} onChange={event => setExam({ ...exam, durationMinutes: Number(event.target.value) })} required /></label>
         </div>
         <label>Description<textarea value={exam.description} onChange={event => setExam({ ...exam, description: event.target.value })} placeholder="Describe the exam goal, topic, or instructions." /></label>
 

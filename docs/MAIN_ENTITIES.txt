@@ -39,3 +39,7 @@ Relationships:
 3. Student User creates many Submissions.
 4. Submission belongs to one Exam.
 5. Submission belongs to one Student.
+
+
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.

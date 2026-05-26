@@ -35,7 +35,7 @@ export default function TeacherExams({ user, refresh }) {
           <div className="card exam-card" key={exam.id}>
             <div className="card-topline">
               <span className={`badge ${exam.status}`}>{ConfigurationService.statusLabel(exam.status)}</span>
-              <span className="muted small-text">{exam.questions.length} questions</span>
+              <span className="muted small-text">{exam.questions.length} questions · {exam.durationMinutes || 30} min</span>
             </div>
             <h2>{exam.title}</h2>
             <p><strong>Course:</strong> {exam.course}</p>
