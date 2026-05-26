@@ -1,0 +1,13 @@
+COMMIT LOG EXAMPLE FOR DEV BRANCH
+
+1. init project structure
+2. add generic services and oop models
+3. add authentication pages
+4. add teacher exam management
+5. add student exam flow
+6. add navigation and final ui design
+7. add explanation and diagrams
+8. add code comments and cleanup
+
+Important:
+Development should be done on dev, not on main.

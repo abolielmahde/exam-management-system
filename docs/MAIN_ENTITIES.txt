@@ -1,0 +1,41 @@
+MAIN ENTITIES USED BY DB MOCKING OR VIEW ENTITIES
+
+User
+- id
+- fullName
+- email
+- password
+- role
+- createdAt
+
+Exam
+- id
+- title
+- course
+- description
+- teacherId
+- questions
+- status
+- createdAt
+- updatedAt
+
+Question
+- text
+- options
+- correctAnswer
+
+Submission
+- id
+- examId
+- studentId
+- answers
+- grade
+- feedback
+- submittedAt
+
+Relationships:
+1. Teacher User creates many Exams.
+2. Exam contains many Questions.
+3. Student User creates many Submissions.
+4. Submission belongs to one Exam.
+5. Submission belongs to one Student.

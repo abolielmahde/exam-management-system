@@ -1,0 +1,79 @@
+UML FOR ALL CODE - TEXT FORMAT
+
+CLASS User
+- id: string
+- fullName: string
+- email: string
+- password: string
+- role: string
+- createdAt: string
++ isTeacher(): boolean
++ isStudent(): boolean
+
+CLASS Exam
+- id: string
+- title: string
+- course: string
+- description: string
+- teacherId: string
+- questions: array
+- status: string
+- createdAt: string
+- updatedAt: string
++ publish(): void
++ close(): void
+
+CLASS Submission
+- id: string
+- examId: string
+- studentId: string
+- answers: array
+- grade: number
+- feedback: string
+- submittedAt: string
+
+CLASS StorageService
++ get(key, fallback): any
++ set(key, value): void
++ remove(key): void
++ clearProjectData(): void
+
+CLASS AuthService
++ currentUser(): User|null
++ register(data): User
++ login(email, password): User
++ logout(): void
+
+CLASS MockApiDbService
++ init(): void
++ getUsers(): User[]
++ saveUsers(users): void
++ getExams(): Exam[]
++ saveExams(exams): void
++ getSubmissions(): Submission[]
++ saveSubmissions(submissions): void
++ createUser(data): User
++ createExam(data): Exam
++ updateExam(id, patch): Exam
++ deleteExam(id): void
++ submitExam(examId, studentId, answers): Submission
++ getTeacherSubmissions(teacherId): Submission[]
+
+CLASS ConfigurationService
++ appName: string
++ version: string
++ author: string
++ roles(): string[]
++ examStatuses(): string[]
++ statusLabel(status): string
++ demoAccounts(): object
+
+CLASS LoggerService
++ info(message, data): void
++ warn(message, data): void
++ error(message, data): void
+
+CLASS NotifyService
++ success(message): void
++ error(message): void
++ info(message): void

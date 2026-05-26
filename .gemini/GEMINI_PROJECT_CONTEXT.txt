@@ -1,0 +1,8 @@
+PROJECT CONTEXT FOR GEMINI CLI
+
+Project: Exam Management System
+Stack: React + Vite
+Data: LocalStorage Mock API DB
+Main users: Teacher, Student
+Main services: AuthService, StorageService, MockApiDbService, LoggerService, NotifyService, ConfigurationService
+Main requirement: modular work, Git dev branch, OOP outside components, text explanation file, and diagrams.

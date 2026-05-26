@@ -1,0 +1,47 @@
+GIT AND AI WORKFLOW
+
+Required branch workflow:
+1. main branch is kept stable.
+2. dev branch is used for development.
+3. Each module or feature should be committed separately.
+4. Comments/documentation can be committed separately after implementation commits.
+5. The project can be published from dev while the milestone is still in progress.
+
+Recommended Git commands:
+
+git init
+git checkout -b dev
+git add .
+git commit -m "init project structure"
+
+git add src/services src/models
+git commit -m "add generic services and oop models"
+
+git add src/pages/auth
+git commit -m "add authentication pages"
+
+git add src/pages/teacher
+git commit -m "add teacher exam management"
+
+git add src/pages/student
+git commit -m "add student exam flow"
+
+git add src/components src/App.jsx src/styles
+git commit -m "add navigation and final ui design"
+
+git add docs README_RUN.txt
+git commit -m "add explanation and diagrams"
+
+AI workflow:
+1. Ask AI for one small module at a time.
+2. Read and understand the generated code.
+3. Test the module manually.
+4. Commit the working module.
+5. Continue to the next module.
+
+Example AI prompts used:
+1. Build generic LocalStorage and mock API services.
+2. Create React auth pages with roles.
+3. Create teacher pages for exam creation and status changes.
+4. Create student pages for exam submission and results.
+5. Generate text-based diagrams and project explanation.

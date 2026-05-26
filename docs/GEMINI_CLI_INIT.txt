@@ -1,0 +1,13 @@
+GEMINI CLI INIT
+
+The exercise asks to run /init in Gemini CLI.
+
+Suggested steps:
+1. Open the project folder in Terminal.
+2. Run Gemini CLI.
+3. Execute:
+   /init
+4. Let Gemini create or update its project context file.
+5. Commit the generated/updated Gemini configuration in a separate commit if needed.
+
+This project includes a .gemini folder and a GEMINI_PROJECT_CONTEXT.txt file as project context.

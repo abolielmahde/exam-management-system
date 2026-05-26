@@ -1,0 +1,57 @@
+PROJECT EXPLANATION
+
+Project name:
+Exam Management System
+
+Goal:
+A client-side exam management system that allows teachers to create exams, publish or close exams, and review student submissions. Students can register, log in, view published exams, submit answers, and see their results.
+
+Main users:
+1. Teacher
+2. Student
+
+Main pages:
+1. Home page
+2. Login page
+3. Register page
+4. Teacher Dashboard
+5. Create Exam
+6. My Exams and Status Management
+7. Teacher Submissions
+8. Student Dashboard
+9. Take Exam
+10. Results
+
+Main features:
+1. Authentication using AuthService
+2. Registration for teachers and students
+3. LocalStorage persistence using StorageService
+4. Mock API DB using MockApiDbService
+5. Teacher exam creation
+6. Teacher exam status changes: draft, published, closed
+7. Student exam submission
+8. Automatic grade calculation
+9. Results display
+10. Toast notifications using NotifyService
+11. Console logging using LoggerService
+12. System constants using ConfigurationService
+
+Services implemented:
+1. AuthService - login, register, logout, current user
+2. StorageService - generic LocalStorage get/set/remove
+3. MockApiDbService - mock database operations for users, exams, submissions
+4. LoggerService - console logs for development/debugging
+5. NotifyService - user notifications
+6. ConfigurationService - app name, version, roles, statuses, demo accounts
+
+OOP usage outside React components:
+1. User class
+2. Exam class
+3. Submission class
+4. Service classes with static methods
+
+Data storage:
+The project uses browser LocalStorage as a mock database. This satisfies the DB mocking requirement without needing a real backend.
+
+Important note:
+The project is intentionally modular. Components are responsible for UI. Services are responsible for business logic and data operations.

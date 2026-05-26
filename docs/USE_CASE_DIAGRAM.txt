@@ -1,0 +1,35 @@
+USE CASE DIAGRAM - TEXT FORMAT
+
+Actors:
+- Guest
+- Teacher
+- Student
+
+Guest:
+- Register
+- Login
+
+Teacher:
+- Login
+- View Teacher Dashboard
+- Create Exam
+- Add Questions
+- Publish Exam
+- Close Exam
+- Delete Exam
+- View Student Submissions
+- Logout
+
+Student:
+- Login
+- View Student Dashboard
+- Start Published Exam
+- Submit Exam
+- View Results
+- Logout
+
+System:
+- Validate Credentials
+- Save Data to Mock DB
+- Calculate Grade
+- Show Notifications
