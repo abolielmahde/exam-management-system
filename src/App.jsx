@@ -47,8 +47,13 @@ export default function App() {
         <section className="hero card">
           <p className="eyebrow">Git + AI modular project</p>
           <h1>Exam Management System</h1>
-          <p>A client-side system for teachers and students. It includes authentication, exam creation, status management, student submissions, results, configuration service, Mock API DB service, and OOP models.</p>
-          <div className="actions center">
+          <p>A polished client-side platform for teachers and students. It includes authentication, exam creation, status management, submissions, results, configuration service, Mock API DB service, and OOP models.</p>
+          <div className="feature-strip">
+            <div className="feature-pill">Teacher exam builder</div>
+            <div className="feature-pill">Student submissions</div>
+            <div className="feature-pill">Mock API + OOP services</div>
+          </div>
+          <div className="actions">
             <button className="primary" onClick={() => setPage('login')}>Enter System</button>
             <button className="secondary" onClick={() => setPage('register')}>Create Account</button>
           </div>
