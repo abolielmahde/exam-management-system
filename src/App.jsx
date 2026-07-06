@@ -12,17 +12,16 @@ import StudentDashboard from './pages/student/StudentDashboard';
 import TakeExam from './pages/student/TakeExam';
 import StudentResults from './pages/student/StudentResults';
 import { AuthService } from './services/AuthService';
-import { MockApiDbService } from './services/MockApiDbService';
 import { LoggerService } from './services/LoggerService';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [page, setPage] = useState('home');
   const [selectedExamId, setSelectedExamId] = useState(null);
+  const [editingExamId, setEditingExamId] = useState(null);
   const [, forceUpdate] = useState(0);
 
   useEffect(() => {
-    MockApiDbService.init();
     const currentUser = AuthService.currentUser();
     setUser(currentUser);
     setPage(currentUser ? `${currentUser.role}-dashboard` : 'home');
@@ -34,9 +33,20 @@ export default function App() {
     setPage(`${loggedUser.role}-dashboard`);
   };
 
+  const navigate = nextPage => {
+    if (nextPage !== 'edit-exam') setEditingExamId(null);
+    setPage(nextPage);
+  };
+
+  const startEditExam = examId => {
+    setEditingExamId(examId);
+    setPage('edit-exam');
+  };
+
   const onLogout = () => {
     setUser(null);
     setSelectedExamId(null);
+    setEditingExamId(null);
     setPage('login');
   };
 
@@ -48,11 +58,11 @@ export default function App() {
         <section className="hero card">
           <p className="eyebrow">Git + AI modular project</p>
           <h1>Exam Management System</h1>
-          <p>A polished client-side platform for teachers and students. It includes authentication, exam creation, status management, submissions, results, configuration service, Mock API DB service, and OOP models.</p>
+          <p>A full-stack platform for teachers and students. It includes JWT authentication, REST API, database storage, exam creation, status management, submissions, grading, results, analytics, Docker and CI/CD.</p>
           <div className="feature-strip">
             <div className="feature-pill">Teacher exam builder</div>
             <div className="feature-pill">Student submissions</div>
-            <div className="feature-pill">Mock API + OOP services</div>
+            <div className="feature-pill">REST API + PostgreSQL DB</div>
           </div>
           <div className="actions">
             <button className="primary" onClick={() => setPage('login')}>Enter System</button>
@@ -65,19 +75,20 @@ export default function App() {
     if (page === 'login') return <Login onLogin={onLogin} setPage={setPage} />;
     if (page === 'register') return <Register onLogin={onLogin} setPage={setPage} />;
     if (!user) return <Login onLogin={onLogin} setPage={setPage} />;
-    if (page === 'teacher-dashboard') return <TeacherDashboard user={user} setPage={setPage} />;
-    if (page === 'create-exam') return <CreateExam user={user} setPage={setPage} />;
-    if (page === 'teacher-exams') return <TeacherExams user={user} refresh={refresh} />;
+    if (page === 'teacher-dashboard') return <TeacherDashboard user={user} setPage={navigate} />;
+    if (page === 'create-exam') return <CreateExam user={user} setPage={navigate} />;
+    if (page === 'edit-exam') return <CreateExam user={user} setPage={navigate} examId={editingExamId} />;
+    if (page === 'teacher-exams') return <TeacherExams user={user} refresh={refresh} setPage={navigate} onEditExam={startEditExam} />;
     if (page === 'teacher-submissions') return <TeacherSubmissions user={user} />;
-    if (page === 'student-dashboard') return <StudentDashboard user={user} setSelectedExamId={setSelectedExamId} setPage={setPage} />;
-    if (page === 'take-exam') return <TakeExam user={user} examId={selectedExamId} setPage={setPage} />;
+    if (page === 'student-dashboard') return <StudentDashboard user={user} setSelectedExamId={setSelectedExamId} setPage={navigate} />;
+    if (page === 'take-exam') return <TakeExam user={user} examId={selectedExamId} setPage={navigate} />;
     if (page === 'student-results') return <StudentResults user={user} />;
     return <section className="card"><h1>Page not found</h1></section>;
   };
 
   return (
     <>
-      <NavigationMenu user={user} page={page} setPage={setPage} onLogout={onLogout} />
+      <NavigationMenu user={user} page={page} setPage={navigate} onLogout={onLogout} />
       <main>{renderPage()}</main>
       <footer className="footer">Developed by Mahde Aboliel | Git + AI Project</footer>
       <Toast />

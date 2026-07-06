@@ -1,0 +1,48 @@
+Database Diagram / ERD
+======================
+
+users
+-----
+id PK
+full_name
+email UNIQUE
+password_hash
+role: teacher | student
+created_at
+
+exams
+-----
+id PK
+teacher_id FK -> users.id
+title
+course
+description
+duration_minutes
+status: draft | published | closed
+questions JSONB
+created_at
+updated_at
+
+submissions
+-----------
+id PK
+exam_id FK -> exams.id
+student_id FK -> users.id
+answers JSONB
+grade
+feedback
+is_published
+submitted_at
+updated_at
+UNIQUE(exam_id, student_id)
+
+Relationships
+-------------
+users 1 ---- N exams
+users 1 ---- N submissions
+exams 1 ---- N submissions
+
+Meaning:
+- A teacher creates many exams.
+- A student submits many submissions.
+- Every submission belongs to one exam and one student.

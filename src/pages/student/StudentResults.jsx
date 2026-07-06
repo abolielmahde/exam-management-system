@@ -1,11 +1,35 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { Award, BarChart3, LineChart } from 'lucide-react';
-import { MockApiDbService } from '../../services/MockApiDbService';
+import { ApiService } from '../../services/ApiService';
+import { NotifyService } from '../../services/NotifyService';
 
 export default function StudentResults({ user }) {
-  const exams = MockApiDbService.getExams();
-  const results = MockApiDbService.getSubmissions().filter(submission => submission.studentId === user.id);
+  const [exams, setExams] = useState([]);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [examList, submissionList] = await Promise.all([
+          ApiService.getExams(),
+          ApiService.getSubmissions()
+        ]);
+        setExams(examList);
+        setResults(submissionList.filter(submission => submission.studentId === user.id));
+      } catch (error) {
+        NotifyService.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, [user.id]);
+
   const average = results.length ? Math.round(results.reduce((sum, result) => sum + Number(result.grade), 0) / results.length) : 0;
+
+  if (loading) return <section className="card"><h2>Loading results...</h2></section>;
 
   return (
     <section>
@@ -13,7 +37,7 @@ export default function StudentResults({ user }) {
         <div>
           <p className="eyebrow">Grades</p>
           <h1>Results</h1>
-          <p className="muted">Your submitted exam grades and personal average are displayed here.</p>
+          <p className="muted">Your submitted exam grades, feedback, and personal average are displayed here.</p>
         </div>
       </div>
 
@@ -41,7 +65,7 @@ export default function StudentResults({ user }) {
             <div className="bar-chart student-chart" style={{ '--average': average }}>
               <div className="average-line"><span>Average {average}</span></div>
               {results.map(result => {
-                const exam = exams.find(item => item.id === result.examId);
+                const exam = exams.find(item => item.id === result.examId) || { title: result.examTitle };
                 const grade = Number(result.grade);
                 return (
                   <div className="bar-item" key={`student-chart-${result.id}`}>
@@ -62,13 +86,14 @@ export default function StudentResults({ user }) {
 
       <div className="cards-list">
         {results.map(result => {
-          const exam = exams.find(item => item.id === result.examId);
+          const exam = exams.find(item => item.id === result.examId) || { title: result.examTitle };
           return (
             <div className="card result-card" key={result.id}>
               <Award size={32} />
               <h2>{exam?.title || 'Deleted exam'}</h2>
               <p>Submitted At: {new Date(result.submittedAt).toLocaleString('en-US')}</p>
               <strong>Grade: {result.grade}</strong>
+              {result.feedback && <p><strong>Teacher Feedback:</strong> {result.feedback}</p>}
             </div>
           );
         })}

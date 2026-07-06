@@ -1,10 +1,33 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { PlayCircle } from 'lucide-react';
-import { MockApiDbService } from '../../services/MockApiDbService';
+import { ApiService } from '../../services/ApiService';
+import { NotifyService } from '../../services/NotifyService';
 
 export default function StudentDashboard({ user, setSelectedExamId, setPage }) {
-  const exams = MockApiDbService.getExams().filter(exam => exam.status === 'published');
-  const submissions = MockApiDbService.getSubmissions().filter(submission => submission.studentId === user.id);
+  const [exams, setExams] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [examList, submissionList] = await Promise.all([
+          ApiService.getExams(),
+          ApiService.getSubmissions()
+        ]);
+        setExams(examList.filter(exam => exam.status === 'published'));
+        setSubmissions(submissionList.filter(submission => submission.studentId === user.id));
+      } catch (error) {
+        NotifyService.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, [user.id]);
+
+  if (loading) return <section className="card"><h2>Loading exams...</h2></section>;
 
   return (
     <section>

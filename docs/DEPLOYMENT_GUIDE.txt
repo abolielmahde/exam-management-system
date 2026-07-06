@@ -1,0 +1,37 @@
+Deployment Guide
+================
+
+Local Docker Deployment
+-----------------------
+Run:
+
+docker compose up --build
+
+Services:
+- Frontend: http://localhost:4173
+- Backend: http://localhost:5001
+- PostgreSQL: localhost:5432
+
+Cloud Deployment Option
+-----------------------
+A simple deployment plan:
+
+1. Deploy PostgreSQL on Render, Railway, Supabase, Neon or another cloud provider.
+2. Deploy backend as a Node.js web service.
+3. Set backend environment variables:
+   PORT=5001
+   NODE_ENV=production
+   CLIENT_URL=<frontend-url>
+   JWT_SECRET=<strong-secret>
+   DATABASE_URL=<cloud-postgres-url>
+   DATABASE_SSL=true
+4. Deploy frontend as a static site.
+5. Set frontend environment variable:
+   VITE_API_BASE_URL=<backend-url>/api
+6. Run a final test:
+   - teacher login
+   - create exam
+   - publish exam
+   - student submit
+   - teacher review
+   - student results

@@ -5,6 +5,7 @@ import { NotifyService } from '../../services/NotifyService';
 
 export default function Register({ onLogin, setPage }) {
   const [form, setForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '', role: 'student' });
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     if (form.password.length < 6) return 'Password must contain at least 6 characters';
@@ -13,7 +14,7 @@ export default function Register({ onLogin, setPage }) {
     return null;
   };
 
-  const submit = event => {
+  const submit = async event => {
     event.preventDefault();
     const error = validate();
 
@@ -22,13 +23,16 @@ export default function Register({ onLogin, setPage }) {
       return;
     }
 
+    setLoading(true);
     try {
       const { confirmPassword, ...payload } = form;
-      const user = AuthService.register(payload);
+      const user = await AuthService.register(payload);
       NotifyService.success('Account created successfully');
       onLogin(user);
     } catch (err) {
       NotifyService.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,7 +46,7 @@ export default function Register({ onLogin, setPage }) {
         <label>Password<input type="password" value={form.password} onChange={event => setForm({ ...form, password: event.target.value })} required /></label>
         <label>Confirm Password<input type="password" value={form.confirmPassword} onChange={event => setForm({ ...form, confirmPassword: event.target.value })} required /></label>
         <label>User Type<select value={form.role} onChange={event => setForm({ ...form, role: event.target.value })}><option value="student">Student</option><option value="teacher">Teacher</option></select></label>
-        <button className="primary">Register</button>
+        <button className="primary" disabled={loading}>{loading ? 'Creating...' : 'Register'}</button>
         <button type="button" className="secondary" onClick={() => setPage('login')}>Already have an account? Login</button>
       </form>
     </section>

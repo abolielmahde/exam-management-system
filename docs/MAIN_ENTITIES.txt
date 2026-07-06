@@ -1,45 +1,60 @@
-MAIN ENTITIES USED BY DB MOCKING OR VIEW ENTITIES
+Main Entities
+=============
 
-User
+1. User
+-------
+Fields:
 - id
 - fullName
 - email
-- password
-- role
+- passwordHash
+- role: teacher or student
 - createdAt
 
-Exam
+Purpose:
+Represents a system user. Teachers create exams and review submissions. Students submit exams and view results.
+
+2. Exam
+-------
+Fields:
 - id
+- teacherId
 - title
 - course
 - description
-- teacherId
-- questions
-- status
+- durationMinutes
+- status: draft, published, closed
+- questions JSONB
 - createdAt
 - updatedAt
 
-Question
+Purpose:
+Represents an exam created by a teacher. Questions are stored as flexible JSONB objects so the system can support multiple question types.
+
+3. Question
+-----------
+Fields:
+- type: multiple-choice, true-false, open-text
 - text
 - options
 - correctAnswer
+- points
 
-Submission
+Purpose:
+Represents one question inside an exam.
+
+4. Submission
+-------------
+Fields:
 - id
 - examId
 - studentId
-- answers
+- answers JSONB
 - grade
 - feedback
+- isPublished
 - submittedAt
+- updatedAt
 
-Relationships:
-1. Teacher User creates many Exams.
-2. Exam contains many Questions.
-3. Student User creates many Submissions.
-4. Submission belongs to one Exam.
-5. Submission belongs to one Student.
-
-
-Time Limit Feature:
-Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
+Purpose:
+Represents a student's answers and grade for a specific exam.

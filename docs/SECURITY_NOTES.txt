@@ -1,0 +1,52 @@
+Security and Validation Concepts
+================================
+
+1. Password Security
+--------------------
+The backend stores only bcrypt password hashes. Plain text passwords are never saved in the database.
+
+2. JWT Authentication
+---------------------
+After login or registration, the backend returns a signed JWT token. The frontend sends it in the Authorization header for protected API calls.
+
+3. Role-Based Authorization
+---------------------------
+Teacher-only routes are protected with role middleware:
+- Create exam
+- Update exam
+- Delete exam
+- Review submissions
+- Edit grades and feedback
+- View teacher analytics
+
+Students cannot access teacher operations.
+
+4. Input Validation
+-------------------
+The backend validates:
+- Email format
+- Password length
+- User role
+- Exam title and course
+- Exam duration range
+- Question types
+- Required answer options
+- Grade range from 0 to 100
+
+5. Database Constraints
+-----------------------
+PostgreSQL constraints protect data consistency:
+- Unique email
+- Role check
+- Exam status check
+- Grade check
+- Foreign keys between users, exams and submissions
+- Unique submission per student per exam
+
+6. Production Notes
+-------------------
+Before cloud deployment:
+- Change JWT_SECRET.
+- Use DATABASE_SSL=true if the cloud provider requires SSL.
+- Restrict CLIENT_URL to the deployed frontend URL.
+- Do not commit .env files.

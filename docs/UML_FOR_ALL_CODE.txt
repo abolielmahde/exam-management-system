@@ -1,83 +1,61 @@
-UML FOR ALL CODE - TEXT FORMAT
+UML / Class and Module Overview
+===============================
 
-CLASS User
-- id: string
-- fullName: string
-- email: string
-- password: string
-- role: string
-- createdAt: string
-+ isTeacher(): boolean
-+ isStudent(): boolean
+Frontend Classes
+----------------
+class AuthService {
+  currentUser()
+  login(email, password)
+  register(data)
+  logout()
+}
 
-CLASS Exam
-- id: string
-- title: string
-- course: string
-- description: string
-- teacherId: string
-- questions: array
-- status: string
-- createdAt: string
-- updatedAt: string
-+ publish(): void
-+ close(): void
+class ApiService {
+  login(email, password)
+  register(payload)
+  getExams()
+  getExam(id)
+  createExam(payload)
+  updateExam(id, patch)
+  deleteExam(id)
+  getSubmissions()
+  submitExam(examId, answers)
+  updateSubmissionGrade(id, payload)
+  getTeacherAnalytics()
+}
 
-CLASS Submission
-- id: string
-- examId: string
-- studentId: string
-- answers: array
-- grade: number
-- feedback: string
-- submittedAt: string
+class StorageService {
+  get(key, fallback)
+  set(key, value)
+  remove(key)
+  clearProjectData()
+}
 
-CLASS StorageService
-+ get(key, fallback): any
-+ set(key, value): void
-+ remove(key): void
-+ clearProjectData(): void
+Backend Modules
+---------------
+module authRoutes
+- POST /auth/register
+- POST /auth/login
+- GET /auth/me
 
-CLASS AuthService
-+ currentUser(): User|null
-+ register(data): User
-+ login(email, password): User
-+ logout(): void
+module examRoutes
+- GET /exams
+- GET /exams/:id
+- POST /exams
+- PUT /exams/:id
+- DELETE /exams/:id
 
-CLASS MockApiDbService
-+ init(): void
-+ getUsers(): User[]
-+ saveUsers(users): void
-+ getExams(): Exam[]
-+ saveExams(exams): void
-+ getSubmissions(): Submission[]
-+ saveSubmissions(submissions): void
-+ createUser(data): User
-+ createExam(data): Exam
-+ updateExam(id, patch): Exam
-+ deleteExam(id): void
-+ submitExam(examId, studentId, answers): Submission
-+ getTeacherSubmissions(teacherId): Submission[]
+module submissionRoutes
+- GET /submissions
+- POST /submissions/exams/:examId/submit
+- PATCH /submissions/:id/grade
 
-CLASS ConfigurationService
-+ appName: string
-+ version: string
-+ author: string
-+ roles(): string[]
-+ examStatuses(): string[]
-+ statusLabel(status): string
-+ demoAccounts(): object
+module analyticsRoutes
+- GET /analytics/teacher
 
-CLASS LoggerService
-+ info(message, data): void
-+ warn(message, data): void
-+ error(message, data): void
+module authMiddleware
+- requireAuth
+- requireRole
 
-CLASS NotifyService
-+ success(message): void
-+ error(message): void
-+ info(message): void
-
-
-Time Limit Feature:
-Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
+module grading
+- calculateGrade(questions, answers)

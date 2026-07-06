@@ -1,92 +1,36 @@
-USE CASE DIAGRAM - TEXT FORMAT
+Use Case Diagram - Text Version
+===============================
 
 Actors:
-- Guest
 - Teacher
 - Student
 
-Guest:
-- Register
-- Login
+Teacher Use Cases:
+[Teacher] --> Login
+[Teacher] --> Create Exam
+[Teacher] --> Add/Edit Questions
+[Teacher] --> Manage Question Types
+[Teacher] --> Publish Exam
+[Teacher] --> Close Exam
+[Teacher] --> Review Submissions
+[Teacher] --> Edit Grade
+[Teacher] --> Add Feedback
+[Teacher] --> Publish Results
+[Teacher] --> View Analytics
 
-Teacher:
-- Login
-- View Teacher Dashboard
-- Create Exam
-- Add Questions
-- Set Exam Time Limit
-- Publish Exam
-- Close Exam
-- Delete Exam
-- View Student Submissions
-- View Class Average
-- View Highest and Lowest Grade
-- Compare Student Grade to Average
-- Logout
+Student Use Cases:
+[Student] --> Login
+[Student] --> View Available Exams
+[Student] --> Enter Exam
+[Student] --> Submit Answers
+[Student] --> View Grade
+[Student] --> View Feedback
+[Student] --> View Personal Average
 
-Student:
-- Login
-- View Student Dashboard
-- Start Published Exam
-- Answer Timed Exam
-- Submit Exam
-- Auto Submit When Time Ends
-- View Results
-- View Personal Average
-- Logout
-
-System:
-- Validate Credentials
-- Save Data to Mock DB
-- Calculate Grade
-- Calculate Student Average
-- Calculate Class Average
-- Show Notifications
-
-ASCII USE CASE DIAGRAM:
-
-        +------------------------+
-        |        Guest           |
-        +------------------------+
-             | Register
-             | Login
-
-        +------------------------+
-        |       Teacher          |
-        +------------------------+
-             | Create Exam
-             | Set Time Limit
-             | Publish / Close Exam
-             | View Submissions
-             | View Class Average
-             | Compare Grades to Average
-
-        +------------------------+
-        |       Student          |
-        +------------------------+
-             | Start Exam
-             | Submit Exam
-             | Auto Submit on Timer End
-             | View Results
-             | View Personal Average
-
-        +------------------------+
-        |        System          |
-        +------------------------+
-             | Validate Login
-             | Save Mock DB Data
-             | Calculate Grades
-             | Calculate Averages
-             | Notify Users
-
-Time Limit Feature:
-Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
-
-Student Average Feature:
-The teacher can view the class average and compare every submission to the average. The student can view a personal average based on submitted exams.
-
-Average Graph Extension:
-Teacher --> View Student Submissions
-View Student Submissions --> View Class Average Graph
-Student --> View Results
-View Results --> View Personal Average Graph
+System Use Cases:
+[System] --> Validate Input
+[System] --> Authenticate JWT
+[System] --> Authorize Role
+[System] --> Store Data in PostgreSQL
+[System] --> Auto Grade Closed Questions
+[System] --> Calculate Analytics

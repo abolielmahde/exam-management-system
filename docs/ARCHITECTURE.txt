@@ -1,0 +1,66 @@
+Architecture - Full Stack Exam Management System
+================================================
+
+1. Frontend Layer
+-----------------
+Technology: React + Vite.
+Responsibility:
+- Display pages for teacher and student.
+- Call backend REST API using fetch.
+- Store only the JWT token and current user in browser localStorage.
+- Does not store exams or submissions locally anymore.
+
+Main frontend pages:
+- Login / Register
+- Teacher Dashboard
+- Create Exam
+- My Exams
+- Student Submissions
+- Student Dashboard
+- Take Exam
+- Student Results
+
+2. Backend Layer
+----------------
+Technology: Node.js + Express.
+Responsibility:
+- Authentication and authorization.
+- Business logic for exams and submissions.
+- Automatic grading for closed questions.
+- Manual grading and feedback by teacher.
+- REST API endpoints for frontend/backend communication.
+
+3. Database Layer
+-----------------
+Technology: PostgreSQL.
+Tables:
+- users
+- exams
+- submissions
+
+The exams.questions and submissions.answers fields use JSONB, so the system can support different question types without changing the table structure every time.
+
+4. Security
+-----------
+- Passwords are stored as bcrypt hashes.
+- Login returns JWT token.
+- Protected API routes require Authorization: Bearer token.
+- Role middleware blocks students from teacher-only operations.
+- Backend validates input before saving data.
+
+5. DevOps
+---------
+- Docker Compose runs frontend, backend and PostgreSQL.
+- GitHub Actions builds the frontend, tests backend logic and runs npm audit.
+
+Architecture flow:
+Student/Teacher Browser
+        |
+        v
+React Frontend
+        |
+        v
+Express REST API + JWT Middleware
+        |
+        v
+PostgreSQL Database

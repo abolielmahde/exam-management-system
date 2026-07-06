@@ -553,3 +553,18 @@ tr:hover td { background: rgba(239, 246, 255, .55); }
   .chart-header { display: block; }
   .bar-chart { gap: 14px; padding-inline: 12px; }
 }
+
+.table-input {
+  width: 100%;
+  min-width: 80px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  background: #fff;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

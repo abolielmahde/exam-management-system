@@ -1,103 +1,68 @@
-USE CASES
+Use Cases
+=========
 
-USE CASE 1 - Teacher Login
-Actor: Teacher
+Use Case 1 - Register/Login
+---------------------------
+Actor: Teacher or Student.
 Flow:
-1. Teacher opens Login page.
-2. Teacher enters email and password.
-3. AuthService validates credentials using MockApiDbService.
-4. Teacher is redirected to Teacher Dashboard.
+1. User enters email and password.
+2. Frontend sends request to backend.
+3. Backend validates credentials.
+4. Backend returns JWT token.
+5. Frontend stores token and redirects user by role.
 
-USE CASE 2 - Student Login
-Actor: Student
-Flow:
-1. Student opens Login page.
-2. Student enters email and password.
-3. AuthService validates credentials.
-4. Student is redirected to Student Dashboard.
-
-USE CASE 3 - Register New User
-Actor: Guest
-Flow:
-1. User opens Register page.
-2. User enters full name, email, password, confirmation password, and role.
-3. The form validates password length and confirmation.
-4. AuthService creates the user.
-5. User is logged in automatically.
-
-USE CASE 4 - Teacher Creates Exam
-Actor: Teacher
+Use Case 2 - Teacher Creates Exam
+---------------------------------
+Actor: Teacher.
 Flow:
 1. Teacher opens Create Exam page.
-2. Teacher enters title, course, description, questions, answers, and correct answers.
-3. MockApiDbService saves the exam as draft.
-4. Teacher is redirected to My Exams.
+2. Teacher fills title, course, description and time limit.
+3. Teacher adds questions and selects question type.
+4. Frontend sends exam data to backend.
+5. Backend validates data and saves exam in PostgreSQL as draft.
 
-USE CASE 5 - Teacher Publishes Exam
-Actor: Teacher
+Use Case 3 - Teacher Publishes Exam
+-----------------------------------
+Actor: Teacher.
 Flow:
-1. Teacher opens My Exams.
+1. Teacher opens My Exams page.
 2. Teacher clicks Publish.
-3. MockApiDbService changes status from draft to published.
+3. Backend updates exam status to published.
 4. Students can now see the exam.
 
-USE CASE 6 - Teacher Closes Exam
-Actor: Teacher
-Flow:
-1. Teacher opens My Exams.
-2. Teacher clicks Close.
-3. MockApiDbService changes status to closed.
-4. Students can no longer see it as open.
-
-USE CASE 7 - Student Submits Exam
-Actor: Student
+Use Case 4 - Student Submits Exam
+---------------------------------
+Actor: Student.
 Flow:
 1. Student opens Student Dashboard.
-2. Student selects a published exam.
-3. Student answers all questions.
-4. Student clicks Submit Exam.
-5. MockApiDbService calculates grade and saves submission.
+2. Student starts a published exam.
+3. Timer starts.
+4. Student answers all questions.
+5. Frontend sends answers to backend.
+6. Backend saves submission and calculates automatic grade.
 
-USE CASE 8 - Student Views Results
-Actor: Student
+Use Case 5 - Teacher Reviews Submissions
+----------------------------------------
+Actor: Teacher.
+Flow:
+1. Teacher opens Student Submissions.
+2. Teacher sees all submissions for his exams.
+3. Teacher can change grade, add feedback and choose publish status.
+4. Backend updates submission.
+
+Use Case 6 - Student Views Results
+----------------------------------
+Actor: Student.
 Flow:
 1. Student opens Results page.
-2. System loads all submissions for that student.
-3. Student sees exam title, submission time, and grade.
+2. Backend returns the student's published submissions.
+3. Student sees grade, feedback and personal average graph.
 
-USE CASE 9 - Teacher Reviews Submissions
-Actor: Teacher
+Use Case 7 - Teacher Analytics
+------------------------------
+Actor: Teacher.
 Flow:
-1. Teacher opens Submissions page.
-2. System loads submissions related to the teacher's exams.
-3. Teacher sees student name, exam name, submission time, and grade.
-
-
-Time Limit Feature:
-Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
-
-USE CASE 10 - Teacher Views Student Average
-Actor: Teacher
-Flow:
-1. Teacher opens the Submissions page.
-2. System loads all submissions that belong to exams created by that teacher.
-3. System calculates class average, highest grade, lowest grade, and active students.
-4. Teacher reviews each student's grade compared to the class average.
-
-USE CASE 11 - Student Views Personal Average
-Actor: Student
-Flow:
-1. Student opens the Results page.
-2. System loads all submissions for the logged-in student.
-3. System calculates the student's personal average grade.
-4. Student sees the average together with each submitted exam grade.
-
-Use Case: View Average Graph
-Actor: Teacher
-Goal: View student grades visually and compare each grade to the class average.
-Flow: The teacher opens Submissions, the system calculates class average, highest grade, lowest grade, and displays a bar graph with an average line.
-
-Use Case: View Personal Grade Graph
-Actor: Student
-Goal: View personal grade progress visually.
-Flow: The student opens Results, the system calculates the personal average and displays a graph comparing each submitted exam grade to the average.
+1. Teacher opens dashboard or submissions page.
+2. Frontend calls analytics endpoint.
+3. Backend calculates class average, highest grade, lowest grade and active students from PostgreSQL.
+4. Frontend displays cards and graph.

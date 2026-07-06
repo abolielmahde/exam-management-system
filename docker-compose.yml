@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: exam-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: exam_management
+      POSTGRES_USER: exam_user
+      POSTGRES_PASSWORD: exam_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U exam_user -d exam_management"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: exam-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 5001
+      NODE_ENV: production
+      CLIENT_URL: http://localhost:4173
+      JWT_SECRET: local_docker_secret_change_before_cloud
+      JWT_EXPIRES_IN: 2h
+      DATABASE_URL: postgres://exam_user:exam_password@postgres:5432/exam_management
+      DATABASE_SSL: "false"
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:5001/api
+    container_name: exam-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4173:4173"
+
+volumes:
+  postgres-data:

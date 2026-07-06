@@ -1,20 +1,35 @@
 import React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MockApiDbService } from '../../services/MockApiDbService';
+import { ApiService } from '../../services/ApiService';
 import { NotifyService } from '../../services/NotifyService';
 
 export default function TakeExam({ user, examId, setPage }) {
-  const exam = MockApiDbService.getExams().find(item => item.id === examId);
-  const durationSeconds = (Number(exam?.durationMinutes) || 30) * 60;
+  const [exam, setExam] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(durationSeconds);
+  const [timeLeft, setTimeLeft] = useState(0);
   const submittedRef = useRef(false);
   const answersRef = useRef({});
-  const answeredCount = useMemo(() => Object.keys(answers).length, [answers]);
+  const answeredCount = useMemo(() => Object.keys(answers).filter(key => String(answers[key]).trim() !== '').length, [answers]);
 
   useEffect(() => {
     answersRef.current = answers;
   }, [answers]);
+
+  useEffect(() => {
+    async function loadExam() {
+      try {
+        const examData = await ApiService.getExam(examId);
+        setExam(examData);
+        setTimeLeft((Number(examData.durationMinutes) || 30) * 60);
+      } catch (error) {
+        NotifyService.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadExam();
+  }, [examId]);
 
   const formatTime = seconds => {
     const safeSeconds = Math.max(0, seconds);
@@ -23,7 +38,7 @@ export default function TakeExam({ user, examId, setPage }) {
     return `${minutes}:${remainingSeconds}`;
   };
 
-  const submit = (force = false) => {
+  const submit = async (force = false) => {
     if (submittedRef.current || !exam) return;
 
     if (!force && answeredCount < exam.questions.length) {
@@ -31,17 +46,24 @@ export default function TakeExam({ user, examId, setPage }) {
       return;
     }
 
-    const currentAnswers = answersRef.current;
-    const orderedAnswers = exam.questions.map((_, index) => currentAnswers[index] !== undefined ? Number(currentAnswers[index]) : -1);
-    MockApiDbService.submitExam(exam.id, user.id, orderedAnswers);
-    submittedRef.current = true;
-    NotifyService.success(force ? 'Time is over. Exam submitted automatically' : 'Exam submitted successfully');
-    setPage('student-results');
+    try {
+      const currentAnswers = answersRef.current;
+      const orderedAnswers = exam.questions.map((question, index) => {
+        const value = currentAnswers[index];
+        if ((question.type || 'multiple-choice') === 'open-text') return String(value || '');
+        return value !== undefined ? Number(value) : -1;
+      });
+      await ApiService.submitExam(exam.id, orderedAnswers);
+      submittedRef.current = true;
+      NotifyService.success(force ? 'Time is over. Exam submitted automatically' : 'Exam submitted successfully');
+      setPage('student-results');
+    } catch (error) {
+      NotifyService.error(error.message);
+    }
   };
 
   useEffect(() => {
     if (!exam) return undefined;
-    setTimeLeft(durationSeconds);
     submittedRef.current = false;
 
     const timer = setInterval(() => {
@@ -56,8 +78,9 @@ export default function TakeExam({ user, examId, setPage }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [examId]);
+  }, [exam?.id]);
 
+  if (loading) return <section className="card"><h2>Loading exam...</h2></section>;
   if (!exam) return <section className="card"><h1>Exam not found</h1><button className="primary" onClick={() => setPage('student-dashboard')}>Back to Dashboard</button></section>;
 
   return (
@@ -69,17 +92,29 @@ export default function TakeExam({ user, examId, setPage }) {
         <div className={`timer ${timeLeft <= 60 ? 'danger-timer' : ''}`}>Time Left: {formatTime(timeLeft)}</div>
       </div>
 
-      {exam.questions.map((question, index) => (
-        <div className="question-box" key={index}>
-          <h3>{index + 1}. {question.text}</h3>
-          {question.options.map((option, optionIndex) => (
-            <label className="radio" key={optionIndex}>
-              <input type="radio" name={`question-${index}`} value={optionIndex} onChange={event => setAnswers({ ...answers, [index]: event.target.value })} />
-              {option}
-            </label>
-          ))}
-        </div>
-      ))}
+      {exam.questions.map((question, index) => {
+        const type = question.type || 'multiple-choice';
+        const options = type === 'true-false' ? ['True', 'False'] : question.options || [];
+        return (
+          <div className="question-box" key={index}>
+            <div className="card-topline">
+              <span className="badge draft">{type}</span>
+            </div>
+            <h3>{index + 1}. {question.text}</h3>
+
+            {type === 'open-text' ? (
+              <textarea placeholder="Write your answer here" value={answers[index] || ''} onChange={event => setAnswers({ ...answers, [index]: event.target.value })} />
+            ) : (
+              options.map((option, optionIndex) => (
+                <label className="radio" key={optionIndex}>
+                  <input type="radio" name={`question-${index}`} value={optionIndex} onChange={event => setAnswers({ ...answers, [index]: event.target.value })} />
+                  {option}
+                </label>
+              ))
+            )}
+          </div>
+        );
+      })}
 
       <div className="actions between">
         <button className="secondary" onClick={() => setPage('student-dashboard')}>Back</button>

@@ -1,0 +1,77 @@
+API Documentation
+=================
+
+Base URL:
+http://localhost:5001/api
+
+Health
+------
+GET /health
+Returns backend status.
+
+Authentication
+--------------
+POST /auth/register
+Body:
+{
+  "fullName": "Student Name",
+  "email": "student@example.com",
+  "password": "123456",
+  "role": "student"
+}
+Returns: user + JWT token.
+
+POST /auth/login
+Body:
+{
+  "email": "teacher@test.com",
+  "password": "123456"
+}
+Returns: user + JWT token.
+
+GET /auth/me
+Headers:
+Authorization: Bearer <token>
+Returns current authenticated user.
+
+Exams
+-----
+GET /exams
+Teacher receives own exams.
+Student receives published exams.
+
+GET /exams/:id
+Returns one exam if the user has permission.
+
+POST /exams
+Teacher only.
+Creates a new exam.
+
+PUT /exams/:id
+Teacher only.
+Updates exam details/status/questions.
+Used for publish and close actions.
+
+DELETE /exams/:id
+Teacher only.
+Deletes exam and related submissions.
+
+Submissions
+-----------
+GET /submissions
+Teacher receives submissions for own exams.
+Student receives own published results.
+
+POST /submissions/exams/:examId/submit
+Student only.
+Submits answers and calculates automatic grade.
+
+PATCH /submissions/:id/grade
+Teacher only.
+Updates grade, feedback and publish status.
+
+Analytics
+---------
+GET /analytics/teacher
+Teacher only.
+Returns created exams count, published count, submissions count, class average, highest grade, lowest grade and active students.

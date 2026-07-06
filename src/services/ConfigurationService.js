@@ -1,6 +1,6 @@
 export class ConfigurationService {
   static appName = 'Exam Management System';
-  static version = '1.0.0';
+  static version = '2.0.0';
   static author = 'Mahde Aboliel';
 
   static roles() {

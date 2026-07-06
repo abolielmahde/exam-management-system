@@ -1,45 +1,45 @@
-COMPONENTS HIERARCHY
+React Component Hierarchy
+=========================
 
 App
 ├── NavigationMenu
 ├── Toast
-├── Home Section
-├── Auth Pages
-│   ├── Login
-│   └── Register
-├── Teacher Pages
-│   ├── TeacherDashboard
-│   ├── CreateExam
-│   ├── TeacherExams
-│   └── TeacherSubmissions
-└── Student Pages
-    ├── StudentDashboard
-    ├── TakeExam
-    └── StudentResults
+├── Login
+├── Register
+├── TeacherDashboard
+├── CreateExam
+├── TeacherExams
+├── TeacherSubmissions
+├── StudentDashboard
+├── TakeExam
+└── StudentResults
 
-Responsibilities:
-App:
-- Controls current page state.
-- Controls current user state.
-- Initializes MockApiDbService.
+Service Layer
+-------------
+AuthService
+- login
+- register
+- logout
+- currentUser
 
-NavigationMenu:
-- Shows navigation according to user role.
-- Handles logout.
+ApiService
+- calls backend REST API using fetch
+- stores JWT token
+- sends Authorization header
+- exams API methods
+- submissions API methods
+- analytics API method
 
-Toast:
-- Shows user notifications.
+StorageService
+- stores only current user and token in browser localStorage
 
-Auth Pages:
-- Login and registration.
-
-Teacher Pages:
-- Dashboard statistics.
-- Exam creation.
-- Exam status management.
-- Submission review.
-
-Student Pages:
-- Published exam list.
-- Exam answering.
-- Result display.
+Backend Modules
+---------------
+server.js
+├── authRoutes
+├── examRoutes
+├── submissionRoutes
+├── analyticsRoutes
+├── auth middleware
+├── role middleware
+└── PostgreSQL pool/initDatabase

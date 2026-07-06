@@ -19,6 +19,6 @@ export class StorageService {
   }
 
   static clearProjectData() {
-    ['mock_users', 'mock_exams', 'mock_submissions', 'current_user'].forEach(key => localStorage.removeItem(key));
+    ['auth_token', 'current_user'].forEach(key => localStorage.removeItem(key));
   }
 }
