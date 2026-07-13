@@ -1,6 +1,7 @@
 # מערכת לניהול מבחנים מקוונים — Full Stack Exam Management System
 
 מערכת Full Stack לניהול מבחנים, שאלות, הגשות, ציונים ומשוב. המערכת כוללת ממשק React למרצה ולסטודנט, שרת Express עם REST API, בסיס נתונים PostgreSQL, אימות JWT, Docker ו־GitHub Actions.
+שמות המציגים:
 מהדי אבו ליל 212192603
 מוסטפא זידאן 322965369
 ## קישורים להגשה
