@@ -1,31 +1,66 @@
-# תהליך CI: בניית Frontend, בדיקות Backend ובדיקת חולשות npm audit.
 name: CI CD Security Pipeline
+
 on:
   push:
-    branches: [main, dev, feature/fullstack-final]
+    branches:
+      - main
+      - dev
+      - feature/fullstack-final
   pull_request:
-    branches: [main]
+    branches:
+      - main
+
 jobs:
   frontend-build:
+    name: Frontend Build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npm run build
-      - run: npm audit --audit-level=high
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci --include=dev
+
+      - name: Verify Vite installation
+        run: npx vite --version
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Frontend security audit
+        run: npm audit --audit-level=high
+
   backend-tests:
+    name: Backend Tests
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - working-directory: backend
-        run: npm install
-      - working-directory: backend
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci --include=dev
+
+      - name: Run backend tests
         run: npm test
-      - working-directory: backend
+
+      - name: Backend security audit
         run: npm audit --audit-level=high
