@@ -4,11 +4,15 @@
 
 ## קישורים להגשה
 
-- **GitHub — branch סופי:** https://github.com/abolielmahde/exam-management-system/tree/feature/fullstack-final
-- **GitHub — repository:** https://github.com/abolielmahde/exam-management-system
-- **Deployment:** `יש להוסיף כאן כתובת Deployment אמיתית לאחר העלאה לענן`
-- **הרצה מקומית:** Frontend — `http://localhost:4173` | Backend health — `http://localhost:5001/api/health`
+## קישורים להגשה
 
+- **GitHub – branch סופי:** https://github.com/abolielmahde/exam-management-system/tree/feature/fullstack-final
+- **GitHub – repository:** https://github.com/abolielmahde/exam-management-system
+- **Deployment – Frontend:** https://exam-management-frontend.onrender.com
+- **Backend API:** https://exam-management-api-votx.onrender.com
+- **Backend Health Check:** https://exam-management-api-votx.onrender.com/api/health
+- **הרצה מקומית:** Frontend — `http://localhost:4173` | Backend health — `http://localhost:5001/api/health`
+- 
 > הערה: `localhost` ו־Docker מקומי אינם נחשבים Deployment ציבורי. לפני ההגשה יש להחליף את שורת ה־Deployment בקישור פעיל.
 
 ## משתמשי Demo
