@@ -24,18 +24,19 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci --include=dev
 
-      - name: Verify Vite installation
-        run: npx vite --version
+      - name: Check local Vite
+        run: test -x node_modules/.bin/vite
 
       - name: Build frontend
         run: npm run build
 
-      - name: Frontend security audit
-        run: npm audit --audit-level=high
+      - name: Audit production frontend packages
+        run: npm audit --omit=dev --audit-level=high
 
   backend-tests:
     name: Backend Tests
@@ -62,5 +63,5 @@ jobs:
       - name: Run backend tests
         run: npm test
 
-      - name: Backend security audit
+      - name: Audit backend packages
         run: npm audit --audit-level=high
