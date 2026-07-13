@@ -1,16 +1,13 @@
 {
   "name": "exam-management-git-ai-project",
-  "version": "1.0.0",
-  "private": true,
+  "version": "2.0.0",
+  "description": "Full Stack Exam Management System - React, Express, PostgreSQL, JWT and Docker",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:frontend": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "backend:install": "cd backend && npm install",
     "backend:dev": "cd backend && npm run dev",
-    "backend:start": "cd backend && npm start",
     "backend:test": "cd backend && npm test",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down"
@@ -23,6 +20,5 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "^5.4.19"
-  },
-  "description": "Full Stack Exam Management System - React frontend + Node/Express backend + PostgreSQL + JWT"
+  }
 }

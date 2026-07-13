@@ -1,124 +1,150 @@
-import React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ApiService } from '../../services/ApiService';
-import { NotifyService } from '../../services/NotifyService';
-
-export default function TakeExam({ user, examId, setPage }) {
-  const [exam, setExam] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(0);
-  const submittedRef = useRef(false);
-  const answersRef = useRef({});
-  const answeredCount = useMemo(() => Object.keys(answers).filter(key => String(answers[key]).trim() !== '').length, [answers]);
-
+/**
+ * מסך ביצוע מבחן. טוען שאלות, מנהל תשובות וטיימר ושולח את ההגשה לשרת.
+ * ההערות בקובץ מסבירות את הזרימה וההחלטות המרכזיות בפרויקט.
+ */
+import React, { useEffect, useRef, useState } from "react";
+import { ApiService } from "../../services/ApiService";
+import { NotifyService } from "../../services/NotifyService";
+// מסך ביצוע מבחן פעיל.
+export default function TakeExam({ examId, setPage }) {
+  const [exam, setExam] = useState(null),
+    [answers, setAnswers] = useState({}),
+    [timeLeft, setTimeLeft] = useState(0),
+    [loading, setLoading] = useState(true);
+  const submitted = useRef(false),
+    answersRef = useRef({});
+  // שמירת עותק עדכני של התשובות לשימוש מתוך Callback של הטיימר.
+  // טעינת המבחן והגדרת זמן המבחן בשניות.
+  // טיימר שיורד בכל שנייה ומבצע Auto Submit כאשר מגיע לאפס.
   useEffect(() => {
     answersRef.current = answers;
   }, [answers]);
-
   useEffect(() => {
-    async function loadExam() {
-      try {
-        const examData = await ApiService.getExam(examId);
-        setExam(examData);
-        setTimeLeft((Number(examData.durationMinutes) || 30) * 60);
-      } catch (error) {
-        NotifyService.error(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadExam();
+    ApiService.getExam(examId)
+      .then((x) => {
+        setExam(x);
+        setTimeLeft((Number(x.durationMinutes) || 30) * 60);
+      })
+      .catch((e) => NotifyService.error(e.message))
+      .finally(() => setLoading(false));
   }, [examId]);
-
-  const formatTime = seconds => {
-    const safeSeconds = Math.max(0, seconds);
-    const minutes = Math.floor(safeSeconds / 60).toString().padStart(2, '0');
-    const remainingSeconds = (safeSeconds % 60).toString().padStart(2, '0');
-    return `${minutes}:${remainingSeconds}`;
-  };
-
+  // הגשת התשובות לשרת; force מאפשר הגשה אוטומטית כשהזמן נגמר.
   const submit = async (force = false) => {
-    if (submittedRef.current || !exam) return;
-
-    if (!force && answeredCount < exam.questions.length) {
-      NotifyService.error('Please answer all questions before submitting');
-      return;
-    }
-
+    if (submitted.current || !exam) return;
+    const arr = exam.questions.map((q, i) =>
+      (q.type || "multiple-choice") === "open-text"
+        ? String(answersRef.current[i] || "")
+        : answersRef.current[i] !== undefined
+          ? Number(answersRef.current[i])
+          : -1,
+    );
+    if (
+      !force &&
+      arr.some((a, i) =>
+        (exam.questions[i].type || "multiple-choice") === "open-text"
+          ? !String(a).trim()
+          : a < 0,
+      )
+    )
+      return NotifyService.error(
+        "Please answer all questions before submitting",
+      );
     try {
-      const currentAnswers = answersRef.current;
-      const orderedAnswers = exam.questions.map((question, index) => {
-        const value = currentAnswers[index];
-        if ((question.type || 'multiple-choice') === 'open-text') return String(value || '');
-        return value !== undefined ? Number(value) : -1;
-      });
-      await ApiService.submitExam(exam.id, orderedAnswers);
-      submittedRef.current = true;
-      NotifyService.success(force ? 'Time is over. Exam submitted automatically' : 'Exam submitted successfully');
-      setPage('student-results');
-    } catch (error) {
-      NotifyService.error(error.message);
+      await ApiService.submitExam(exam.id, arr);
+      submitted.current = true;
+      NotifyService.success(
+        force
+          ? "Time is over. Exam submitted automatically"
+          : "Exam submitted successfully",
+      );
+      setPage("student-results");
+    } catch (e) {
+      NotifyService.error(e.message);
     }
   };
-
   useEffect(() => {
-    if (!exam) return undefined;
-    submittedRef.current = false;
-
-    const timer = setInterval(() => {
-      setTimeLeft(current => {
-        if (current <= 1) {
-          clearInterval(timer);
-          submit(true);
-          return 0;
-        }
-        return current - 1;
-      });
-    }, 1000);
-
+    if (!exam) return;
+    const timer = setInterval(
+      () =>
+        setTimeLeft((t) => {
+          if (t <= 1) {
+            clearInterval(timer);
+            submit(true);
+            return 0;
+          }
+          return t - 1;
+        }),
+      1000,
+    );
     return () => clearInterval(timer);
   }, [exam?.id]);
-
-  if (loading) return <section className="card"><h2>Loading exam...</h2></section>;
-  if (!exam) return <section className="card"><h1>Exam not found</h1><button className="primary" onClick={() => setPage('student-dashboard')}>Back to Dashboard</button></section>;
-
+  if (loading)
+    return (
+      <section className="card">
+        <h2>Loading exam...</h2>
+      </section>
+    );
+  if (!exam)
+    return (
+      <section className="card">
+        <h2>Exam not found</h2>
+      </section>
+    );
+  // המרת מספר שניות לפורמט דקות:שניות.
+  const fmt = (s) =>
+    `${Math.floor(Math.max(0, s) / 60)
+      .toString()
+      .padStart(2, "0")}:${(Math.max(0, s) % 60).toString().padStart(2, "0")}`;
   return (
     <section className="card form-card">
       <p className="eyebrow">Exam submission</p>
       <h1>{exam.title}</h1>
       <div className="exam-meta-bar">
-        <p className="muted">Course: {exam.course} | Answered {answeredCount}/{exam.questions.length}</p>
-        <div className={`timer ${timeLeft <= 60 ? 'danger-timer' : ''}`}>Time Left: {formatTime(timeLeft)}</div>
+        <p>Course: {exam.course}</p>
+        <div className={`timer ${timeLeft <= 60 ? "danger-timer" : ""}`}>
+          Time Left: {fmt(timeLeft)}
+        </div>
       </div>
-
-      {exam.questions.map((question, index) => {
-        const type = question.type || 'multiple-choice';
-        const options = type === 'true-false' ? ['True', 'False'] : question.options || [];
+      {exam.questions.map((q, i) => {
+        const type = q.type || "multiple-choice",
+          opts = type === "true-false" ? ["True", "False"] : q.options || [];
         return (
-          <div className="question-box" key={index}>
-            <div className="card-topline">
-              <span className="badge draft">{type}</span>
-            </div>
-            <h3>{index + 1}. {question.text}</h3>
-
-            {type === 'open-text' ? (
-              <textarea placeholder="Write your answer here" value={answers[index] || ''} onChange={event => setAnswers({ ...answers, [index]: event.target.value })} />
+          <div className="question-box" key={i}>
+            <h3>
+              {i + 1}. {q.text}
+            </h3>
+            {type === "open-text" ? (
+              <textarea
+                value={answers[i] || ""}
+                onChange={(e) =>
+                  setAnswers({ ...answers, [i]: e.target.value })
+                }
+              />
             ) : (
-              options.map((option, optionIndex) => (
-                <label className="radio" key={optionIndex}>
-                  <input type="radio" name={`question-${index}`} value={optionIndex} onChange={event => setAnswers({ ...answers, [index]: event.target.value })} />
-                  {option}
+              opts.map((o, j) => (
+                <label className="radio" key={j}>
+                  <input
+                    type="radio"
+                    name={`q-${i}`}
+                    onChange={() => setAnswers({ ...answers, [i]: j })}
+                  />
+                  {o}
                 </label>
               ))
             )}
           </div>
         );
       })}
-
       <div className="actions between">
-        <button className="secondary" onClick={() => setPage('student-dashboard')}>Back</button>
-        <button className="primary" onClick={() => submit()}>Submit Exam</button>
+        <button
+          className="secondary"
+          onClick={() => setPage("student-dashboard")}
+        >
+          Back
+        </button>
+        <button className="primary" onClick={() => submit()}>
+          Submit Exam
+        </button>
       </div>
     </section>
   );

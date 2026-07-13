@@ -1,0 +1,17 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.5, ranksep=0.75];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=10, fillcolor="#f8fafc", color="#64748b"];
+  edge [color="#334155", penwidth=1.2, arrowsize=0.75];
+  main [label="main\nbase / stable", fillcolor="#dbeafe", color="#2563eb"];
+  dev [label="dev\nprevious work\nkept unchanged", fillcolor="#fef3c7", color="#d97706"];
+  feat [label="feature/fullstack-final\nfinal submission", fillcolor="#ecfdf5", color="#059669"];
+  m1 [label="M1 Structure + React"];
+  m2 [label="M2 Auth + Roles"];
+  m3 [label="M3 Exams + Questions + Timer"];
+  m4 [label="M4 Submissions + Results + Analytics"];
+  m5 [label="M5 Express + PostgreSQL + JWT"];
+  m6 [label="M6 Docker + CI + Tests + Docs"];
+  main -> feat [label="new branch"];
+  dev -> dev [label="unchanged", color="#d97706"];
+  feat -> m1 -> m2 -> m3 -> m4 -> m5 -> m6;
+}

@@ -1,105 +1,89 @@
-import { StorageService } from './StorageService';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-const TOKEN_KEY = 'auth_token';
-
+/**
+ * שכבת התקשורת עם ה-Backend. מרכזת את כל בקשות ה-fetch ואת שליחת ה-JWT.
+ * ההערות בקובץ מסבירות את הזרימה וההחלטות המרכזיות בפרויקט.
+ */
+import { StorageService } from "./StorageService";
+// כתובת בסיס שנקבעת ממשתנה סביבה או מ-localhost.
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001/api";
+const TOKEN_KEY = "auth_token";
+// פונקציה משותפת לכל בקשות ה-HTTP. מוסיפה Headers, JWT וטיפול בשגיאות.
 async function request(path, options = {}) {
   const token = StorageService.get(TOKEN_KEY, null);
   const headers = {
-    'Content-Type': 'application/json',
-    ...(options.headers || {})
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
   };
-
   if (token) headers.Authorization = `Bearer ${token}`;
-
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers
+    headers,
   });
-
   if (response.status === 204) return null;
-
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.message || 'Server request failed');
-  }
+  if (!response.ok) throw new Error(data.message || "Server request failed");
   return data;
 }
-
+// API ציבורי שבו משתמשות הקומפוננטות והשירותים.
 export class ApiService {
-  static tokenKey = TOKEN_KEY;
-  static apiBaseUrl = API_BASE_URL;
-
   static saveAuth({ user, token }) {
-    StorageService.set('current_user', user);
+    StorageService.set("current_user", user);
     StorageService.set(TOKEN_KEY, token);
     return user;
   }
-
   static clearAuth() {
-    StorageService.remove('current_user');
+    StorageService.remove("current_user");
     StorageService.remove(TOKEN_KEY);
   }
-
   static login(email, password) {
-    return request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password })
+    return request("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
     });
   }
-
   static register(payload) {
-    return request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(payload)
+    return request("/auth/register", {
+      method: "POST",
+      body: JSON.stringify(payload),
     });
   }
-
   static getExams() {
-    return request('/exams').then(data => data.exams || []);
+    return request("/exams").then((d) => d.exams || []);
   }
-
   static getExam(id) {
-    return request(`/exams/${id}`).then(data => data.exam);
+    return request(`/exams/${id}`).then((d) => d.exam);
   }
-
   static createExam(payload) {
-    return request('/exams', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    }).then(data => data.exam);
+    return request("/exams", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then((d) => d.exam);
   }
-
   static updateExam(id, patch) {
     return request(`/exams/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(patch)
-    }).then(data => data.exam);
+      method: "PUT",
+      body: JSON.stringify(patch),
+    }).then((d) => d.exam);
   }
-
   static deleteExam(id) {
-    return request(`/exams/${id}`, { method: 'DELETE' });
+    return request(`/exams/${id}`, { method: "DELETE" });
   }
-
   static getSubmissions() {
-    return request('/submissions').then(data => data.submissions || []);
+    return request("/submissions").then((d) => d.submissions || []);
   }
-
   static submitExam(examId, answers) {
     return request(`/submissions/exams/${examId}/submit`, {
-      method: 'POST',
-      body: JSON.stringify({ answers })
-    }).then(data => data.submission);
+      method: "POST",
+      body: JSON.stringify({ answers }),
+    }).then((d) => d.submission);
   }
-
   static updateSubmissionGrade(id, payload) {
     return request(`/submissions/${id}/grade`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload)
-    }).then(data => data.submission);
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }).then((d) => d.submission);
   }
-
   static getTeacherAnalytics() {
-    return request('/analytics/teacher').then(data => data.analytics);
+    return request("/analytics/teacher").then((d) => d.analytics);
   }
 }

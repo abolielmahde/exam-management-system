@@ -1,16 +1,8 @@
-Exam Management System - Full Stack Context
-==========================================
+PROJECT CONTEXT FOR GEMINI CLI
 
-This project is a full stack online exam management system.
-Frontend: React + Vite.
-Backend: Node.js + Express.
-Database: PostgreSQL with JSONB for exam questions and answers.
-Authentication: JWT + bcrypt.
-DevOps: Docker Compose and GitHub Actions.
-
-Main frontend services: AuthService, ApiService, StorageService, LoggerService, NotifyService, ConfigurationService.
-Main backend modules: authRoutes, examRoutes, submissionRoutes, analyticsRoutes, requireAuth middleware, requireRole middleware, PostgreSQL pool and initDatabase.
-
-Demo accounts:
-teacher@test.com / 123456
-student@test.com / 123456
+Project: Exam Management System
+Stack: React + Vite
+Data: LocalStorage Mock API DB
+Main users: Teacher, Student
+Main services: AuthService, StorageService, MockApiDbService, LoggerService, NotifyService, ConfigurationService
+Main requirement: modular work, Git dev branch, OOP outside components, text explanation file, and diagrams.

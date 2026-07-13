@@ -1,3 +1,7 @@
+/**
+ * מודל OOP של משתמש במערכת. שומר נתוני משתמש ומספק פעולות עזר לבדיקת Role.
+ * ההערות בקובץ מסבירות את הזרימה וההחלטות המרכזיות בפרויקט.
+ */
 export class User {
   constructor({ id, fullName, email, password, role }) {
     this.id = id;
@@ -9,10 +13,10 @@ export class User {
   }
 
   isTeacher() {
-    return this.role === 'teacher';
+    return this.role === "teacher";
   }
 
   isStudent() {
-    return this.role === 'student';
+    return this.role === "student";
   }
 }

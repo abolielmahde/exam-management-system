@@ -1,9 +1,15 @@
-import React from 'react';
-import { BookOpen, LogOut, UserRound } from 'lucide-react';
-import { AuthService } from '../services/AuthService';
-import { ConfigurationService } from '../services/ConfigurationService';
+/**
+ * תפריט הניווט העליון. מציג אפשרויות שונות לפי סוג המשתמש ומטפל בהתנתקות.
+ * ההערות בקובץ מסבירות את הזרימה וההחלטות המרכזיות בפרויקט.
+ */
+import React from "react";
+import { BookOpen, LogOut, UserRound } from "lucide-react";
+import { AuthService } from "../services/AuthService";
+import { ConfigurationService } from "../services/ConfigurationService";
 
+// תפריט שמותאם אוטומטית ל-Role של המשתמש.
 export default function NavigationMenu({ user, page, setPage, onLogout }) {
+  // מחיקת פרטי האימות והודעה ל-App שהמשתמש התנתק.
   const logout = () => {
     AuthService.logout();
     onLogout();
@@ -11,7 +17,10 @@ export default function NavigationMenu({ user, page, setPage, onLogout }) {
 
   return (
     <header className="nav">
-      <button className="brand" onClick={() => setPage(user ? `${user.role}-dashboard` : 'home')}>
+      <button
+        className="brand"
+        onClick={() => setPage(user ? `${user.role}-dashboard` : "home")}
+      >
         <BookOpen size={26} />
         <span>{ConfigurationService.appName}</span>
       </button>
@@ -19,25 +28,70 @@ export default function NavigationMenu({ user, page, setPage, onLogout }) {
       <nav className="nav-links" aria-label="Main navigation">
         {!user && (
           <>
-            <button className={page === 'home' ? 'active' : ''} onClick={() => setPage('home')}>Home</button>
-            <button className={page === 'login' ? 'active' : ''} onClick={() => setPage('login')}>Login</button>
-            <button className={page === 'register' ? 'active' : ''} onClick={() => setPage('register')}>Register</button>
+            <button
+              className={page === "home" ? "active" : ""}
+              onClick={() => setPage("home")}
+            >
+              Home
+            </button>
+            <button
+              className={page === "login" ? "active" : ""}
+              onClick={() => setPage("login")}
+            >
+              Login
+            </button>
+            <button
+              className={page === "register" ? "active" : ""}
+              onClick={() => setPage("register")}
+            >
+              Register
+            </button>
           </>
         )}
 
-        {user?.role === 'teacher' && (
+        {user?.role === "teacher" && (
           <>
-            <button className={page === 'teacher-dashboard' ? 'active' : ''} onClick={() => setPage('teacher-dashboard')}>Teacher Dashboard</button>
-            <button className={page === 'create-exam' ? 'active' : ''} onClick={() => setPage('create-exam')}>Create Exam</button>
-            <button className={page === 'teacher-exams' ? 'active' : ''} onClick={() => setPage('teacher-exams')}>My Exams</button>
-            <button className={page === 'teacher-submissions' ? 'active' : ''} onClick={() => setPage('teacher-submissions')}>Submissions</button>
+            <button
+              className={page === "teacher-dashboard" ? "active" : ""}
+              onClick={() => setPage("teacher-dashboard")}
+            >
+              Teacher Dashboard
+            </button>
+            <button
+              className={page === "create-exam" ? "active" : ""}
+              onClick={() => setPage("create-exam")}
+            >
+              Create Exam
+            </button>
+            <button
+              className={page === "teacher-exams" ? "active" : ""}
+              onClick={() => setPage("teacher-exams")}
+            >
+              My Exams
+            </button>
+            <button
+              className={page === "teacher-submissions" ? "active" : ""}
+              onClick={() => setPage("teacher-submissions")}
+            >
+              Submissions
+            </button>
           </>
         )}
 
-        {user?.role === 'student' && (
+        {user?.role === "student" && (
           <>
-            <button className={page === 'student-dashboard' ? 'active' : ''} onClick={() => setPage('student-dashboard')}>Student Dashboard</button>
-            <button className={page === 'student-results' ? 'active' : ''} onClick={() => setPage('student-results')}>Results</button>
+            <button
+              className={page === "student-dashboard" ? "active" : ""}
+              onClick={() => setPage("student-dashboard")}
+            >
+              Student Dashboard
+            </button>
+            <button
+              className={page === "student-results" ? "active" : ""}
+              onClick={() => setPage("student-results")}
+            >
+              Results
+            </button>
           </>
         )}
       </nav>
@@ -46,7 +100,9 @@ export default function NavigationMenu({ user, page, setPage, onLogout }) {
         <div className="user-box">
           <UserRound size={18} />
           <span>{user.fullName}</span>
-          <button className="logout" onClick={logout}><LogOut size={16} /> Logout</button>
+          <button className="logout" onClick={logout}>
+            <LogOut size={16} /> Logout
+          </button>
         </div>
       )}
     </header>

@@ -1,0 +1,19 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.6, ranksep=0.8];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=12, fillcolor="#eef4ff", color="#5b7cfa", penwidth=1.5, margin="0.18,0.12"];
+  edge [fontname="DejaVu Sans", fontsize=10, color="#475569", penwidth=1.4, arrowsize=0.8];
+  user [label="Teacher / Student\nBrowser", fillcolor="#f8fafc"];
+  react [label="React Frontend\nVite + Components"];
+  api [label="Express REST API\nJWT + Validation"];
+  services [label="Backend Services\nAuth • Exams • Submissions • Analytics", fillcolor="#f3e8ff", color="#7c3aed"];
+  db [label="PostgreSQL\nUsers • Exams • Submissions\nJSONB Questions / Answers", shape=cylinder, fillcolor="#ecfdf5", color="#059669"];
+  storage [label="Browser localStorage\nJWT + Current User only", fillcolor="#fff7ed", color="#ea580c"];
+  user -> react [label="UI actions"];
+  react -> api [label="HTTPS / JSON\nBearer JWT"];
+  api -> services [label="Route handlers"];
+  services -> db [label="Parameterized SQL"];
+  db -> services [label="Rows / JSONB"];
+  services -> api [label="JSON response"];
+  api -> react [label="HTTP response"];
+  react -> storage [label="save/read session"];
+}

@@ -1,0 +1,21 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.55, ranksep=0.75];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=10.5, fillcolor="#f8fafc", color="#64748b", penwidth=1.3];
+  edge [fontname="DejaVu Sans", fontsize=9.5, color="#334155", penwidth=1.2, arrowsize=0.75];
+  dev [label="Developer\nfeature/fullstack-final", fillcolor="#dbeafe", color="#2563eb"];
+  git [label="GitHub Repository"];
+  actions [label="GitHub Actions\nNode 20", fillcolor="#f3e8ff", color="#7c3aed"];
+  front [label="Frontend Job\nnpm install → build → audit"];
+  back [label="Backend Job\nnpm install → tests → audit"];
+  docker [label="Docker Compose\nfrontend + backend + postgres", fillcolor="#ecfdf5", color="#059669"];
+  logs [label="Runtime Logs\nMorgan + Docker logs"];
+  deploy [label="Cloud Deploy\nFrontend + API + PostgreSQL", fillcolor="#fff7ed", color="#ea580c"];
+  dev -> git [label="push / commits"];
+  git -> actions [label="workflow trigger"];
+  actions -> front;
+  actions -> back;
+  front -> docker [label="validated build"];
+  back -> docker [label="validated tests"];
+  docker -> logs;
+  docker -> deploy [label="same env-based architecture", style=dashed];
+}

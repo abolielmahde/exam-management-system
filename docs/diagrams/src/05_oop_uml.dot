@@ -1,0 +1,17 @@
+digraph G {
+  graph [rankdir=TB, bgcolor="white", pad=0.3, nodesep=0.6, ranksep=0.75];
+  node [shape=record, style="filled", fontname="DejaVu Sans", fontsize=10.5, fillcolor="#f8fafc", color="#475569", penwidth=1.3];
+  edge [color="#475569", penwidth=1.2, arrowsize=0.8];
+  user [label="{User|id\lfullName\lemail\lpassword\lrole\lcreatedAt\l|isTeacher()\lisStudent()\l}", fillcolor="#dbeafe", color="#2563eb"];
+  exam [label="{Exam|id\ltitle\lcourse\ldescription\lteacherId\ldurationMinutes\lquestions[]\lstatus\lcreatedAt\lupdatedAt\l|publish()\lclose()\l}", fillcolor="#f3e8ff", color="#7c3aed"];
+  sub [label="{Submission|id\lexamId\lstudentId\lanswers[]\lgrade\lfeedback\lsubmittedAt\l}", fillcolor="#ecfdf5", color="#059669"];
+  api [label="{ApiService|+ login()\l+ register()\l+ getExams()\l+ getExam()\l+ createExam()\l+ updateExam()\l+ deleteExam()\l+ getSubmissions()\l+ submitExam()\l+ updateSubmissionGrade()\l+ getTeacherAnalytics()\l}", fillcolor="#fff7ed", color="#ea580c"];
+  auth [label="{AuthService|+ currentUser()\l+ register()\l+ login()\l+ logout()\l}"];
+  storage [label="{StorageService|+ get()\l+ set()\l+ remove()\l+ clearProjectData()\l}"];
+  user -> exam [label="teacher owns", arrowhead=none];
+  user -> sub [label="student creates", arrowhead=none];
+  exam -> sub [label="exam has", arrowhead=none];
+  auth -> api [label="uses", style=dashed];
+  auth -> storage [label="uses", style=dashed];
+  api -> storage [label="JWT", style=dashed];
+}

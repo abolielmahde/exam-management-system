@@ -1,45 +1,31 @@
+# תהליך CI: בניית Frontend, בדיקות Backend ובדיקת חולשות npm audit.
 name: CI CD Security Pipeline
-
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev, feature/fullstack-final]
   pull_request:
-    branches: [ main, dev ]
-
+    branches: [main]
 jobs:
   frontend-build:
-    name: Frontend Build and Audit
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - name: Install frontend dependencies
-        run: npm install
-      - name: Build frontend
-        run: npm run build
-      - name: Frontend npm audit
-        run: npm audit --audit-level=high
-
+          node-version: 20
+      - run: npm install
+      - run: npm run build
+      - run: npm audit --audit-level=high
   backend-tests:
-    name: Backend Tests and Security Audit
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - name: Install backend dependencies
-        working-directory: backend
+          node-version: 20
+      - working-directory: backend
         run: npm install
-      - name: Run backend unit tests
-        working-directory: backend
+      - working-directory: backend
         run: npm test
-      - name: Backend npm audit
-        working-directory: backend
+      - working-directory: backend
         run: npm audit --audit-level=high

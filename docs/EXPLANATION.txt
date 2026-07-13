@@ -1,75 +1,68 @@
-Project Explanation - Full Stack Exam Management System
-=======================================================
+PROJECT EXPLANATION
 
-Project Goal
-------------
-This project is a full stack web application for managing online exams and student submissions.
-The system supports two main users: lecturers/teachers and students.
+Project name:
+Exam Management System
 
-Main Users
-----------
-1. Lecturer / Teacher
-The teacher can create exams, add questions, choose question types, publish exams, close exams, review student submissions, update grades, write feedback and publish results.
+Goal:
+A client-side exam management system that allows teachers to create exams, publish or close exams, and review student submissions. Students can register, log in, view published exams, submit answers, and see their results.
 
+Main users:
+1. Teacher
 2. Student
-The student can register, login, view published exams, enter an exam, answer questions, submit the exam and view grades and feedback.
 
-Technology Stack
-----------------
-Frontend:
-React + Vite.
+Main pages:
+1. Home page
+2. Login page
+3. Register page
+4. Teacher Dashboard
+5. Create Exam
+6. My Exams and Status Management
+7. Teacher Submissions
+8. Student Dashboard
+9. Take Exam
+10. Results
 
-Backend:
-Node.js + Express REST API.
+Main features:
+1. Authentication using AuthService
+2. Registration for teachers and students
+3. LocalStorage persistence using StorageService
+4. Mock API DB using MockApiDbService
+5. Teacher exam creation
+6. Teacher exam status changes: draft, published, closed
+7. Student exam submission
+8. Automatic grade calculation
+9. Results display
+10. Toast notifications using NotifyService
+11. Console logging using LoggerService
+12. System constants using ConfigurationService
 
-Database:
-PostgreSQL.
+Services implemented:
+1. AuthService - login, register, logout, current user
+2. StorageService - generic LocalStorage get/set/remove
+3. MockApiDbService - mock database operations for users, exams, submissions
+4. LoggerService - console logs for development/debugging
+5. NotifyService - user notifications
+6. ConfigurationService - app name, version, roles, statuses, demo accounts
 
-Authentication:
-JWT tokens and bcrypt password hashing.
+OOP usage outside React components:
+1. User class
+2. Exam class
+3. Submission class
+4. Service classes with static methods
 
-DevOps:
-Docker, Docker Compose and GitHub Actions CI/CD.
+Data storage:
+The project uses browser LocalStorage as a mock database. This satisfies the DB mocking requirement without needing a real backend.
 
-Main Features
--------------
-1. Authentication and Authorization
-Users can register and login. The backend returns a JWT token. Protected routes require the token. Role-based authorization separates teacher and student permissions.
+Important note:
+The project is intentionally modular. Components are responsible for UI. Services are responsible for business logic and data operations.
 
-2. Exam Management
-Teachers can create exams with title, course, description, time limit and questions. The system supports multiple-choice, true/false and open-text questions.
 
-3. Exam Publishing
-Teachers can keep exams as draft, publish them to students, or close them after the exam ends.
+Time Limit Feature:
+Teachers set a duration in minutes when creating an exam. Students see the time limit before starting and during the exam. When the timer reaches zero, the exam is submitted automatically.
 
-4. Student Submission
-Students can view only published exams. The exam page includes a timer. When the student submits, answers are saved in PostgreSQL.
+Additional Feature - Student Average:
+The project now includes an analytics feature. The teacher can view class average, highest grade, lowest grade, active students, and each student's grade compared to the average. The student can view a personal average in the Results page. This feature supports the use case requirement and demonstrates calculation logic inside the mock service flow.
 
-5. Grading
-Multiple-choice and true/false questions are graded automatically. Open-text questions can be reviewed manually by the teacher. Teachers can edit grades and add feedback.
-
-6. Results
-Students can view published results, feedback and their personal average.
-
-7. Analytics
-Teachers can view class average, highest grade, lowest grade, number of active students and a visual grade comparison graph.
-
-8. Database Design
-The database includes users, exams and submissions. The questions and answers are stored as JSONB fields, which makes the system flexible for multiple question types.
-
-9. Frontend/Backend Communication
-The React frontend communicates with the Express backend using fetch requests to REST endpoints under /api.
-
-10. Deployment
-The project includes Docker Compose for running frontend, backend and PostgreSQL together. It also includes a GitHub Actions workflow for build, tests and security audit.
-
-Why This Meets the Requirements
--------------------------------
-- Frontend application: React.
-- Backend API: Express.
-- Database integration: PostgreSQL.
-- Authentication and authorization: JWT + role middleware.
-- Persistent data storage: PostgreSQL tables.
-- Cloud/server readiness: environment variables and deployment guide.
-- Documentation: architecture, database diagram, API documentation and run guide.
-- Added features: analytics, timer, feedback, Docker and CI/CD.
+Average Graph Update:
+The teacher submissions page now includes a visual bar graph that compares every student grade against the class average. Grades above or equal to the average are shown as one style, and grades below the average are shown as another style.
+The student results page now includes a personal graph that compares the student's submitted grades against their personal average.

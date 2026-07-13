@@ -6,4 +6,3 @@ backend/.env
 .DS_Store
 *.log
 coverage/
-postgres-data/

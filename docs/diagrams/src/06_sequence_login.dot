@@ -1,0 +1,24 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.45, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=10.5, fillcolor="#f8fafc", color="#64748b"];
+  edge [fontname="DejaVu Sans", fontsize=9.5, color="#334155", penwidth=1.2, arrowsize=0.75];
+  user [label="User"];
+  ui [label="Login.jsx"];
+  auth [label="AuthService"];
+  api [label="ApiService"];
+  server [label="POST /api/auth/login"];
+  db [label="PostgreSQL", shape=cylinder];
+  local [label="localStorage"];
+  user -> ui [label="email + password"];
+  ui -> auth [label="login()"];
+  auth -> api [label="login()"];
+  api -> server [label="HTTP JSON"];
+  server -> db [label="SELECT user by email"];
+  db -> server [label="user row"];
+  server -> server [label="bcrypt compare + sign JWT"];
+  server -> api [label="{ user, token }"];
+  api -> auth [label="response"];
+  auth -> local [label="save token + user"];
+  auth -> ui [label="logged user"];
+  ui -> user [label="role dashboard"];
+}

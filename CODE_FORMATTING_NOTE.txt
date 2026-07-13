@@ -1,0 +1,9 @@
+Code Formatting Note
+====================
+
+All JavaScript, JSX, CSS, HTML, JSON, YAML and Markdown code files were formatted for readability.
+Imports, functions, JSX elements, objects and conditions are now separated across clear lines with consistent indentation.
+
+Validation completed:
+- Frontend: npm run build passed successfully.
+- Backend: npm test passed successfully.

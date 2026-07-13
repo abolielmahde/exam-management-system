@@ -1,0 +1,30 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.42, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=9.8, fillcolor="#f8fafc", color="#64748b"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#334155", penwidth=1.15, arrowsize=0.72];
+  student [label="Student"];
+  take [label="TakeExam.jsx"];
+  api [label="ApiService"];
+  auth [label="JWT + Student Role"];
+  submit [label="Submission Route"];
+  grade [label="calculateGrade()"];
+  db [label="PostgreSQL", shape=cylinder];
+  teacher [label="TeacherSubmissions.jsx"];
+  results [label="StudentResults.jsx"];
+  student -> take [label="answer questions"];
+  take -> api [label="submitExam(answers)"];
+  api -> auth [label="POST /submit + JWT"];
+  auth -> submit [label="student authorized"];
+  submit -> db [label="load published exam"];
+  db -> submit [label="questions JSONB"];
+  submit -> grade [label="questions + answers"];
+  grade -> submit [label="auto grade"];
+  submit -> db [label="UPSERT submission"];
+  db -> api [label="submission JSON"];
+  teacher -> api [label="PATCH grade/feedback"];
+  api -> db [label="UPDATE submission"];
+  student -> results [label="open Results"];
+  results -> api [label="GET /submissions"];
+  api -> db [label="published results only"];
+  db -> results [label="grade + feedback"];
+}

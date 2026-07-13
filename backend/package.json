@@ -1,13 +1,11 @@
 {
   "name": "exam-management-backend",
   "version": "2.0.0",
-  "description": "Backend API for the Full Stack Exam Management System",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "db:init": "node src/db/initDatabase.js",
     "test": "node --test"
   },
   "dependencies": {
@@ -19,6 +17,5 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.13.1"
-  },
-  "devDependencies": {}
+  }
 }

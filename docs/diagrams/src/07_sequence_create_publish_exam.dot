@@ -1,0 +1,28 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.42, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=10, fillcolor="#f8fafc", color="#64748b"];
+  edge [fontname="DejaVu Sans", fontsize=9.2, color="#334155", penwidth=1.15, arrowsize=0.72];
+  teacher [label="Teacher"];
+  form [label="CreateExam.jsx"];
+  api [label="ApiService"];
+  auth [label="JWT + Role Middleware"];
+  route [label="Exam Route"];
+  valid [label="validateExam()"];
+  db [label="PostgreSQL", shape=cylinder];
+  list [label="TeacherExams.jsx"];
+  teacher -> form [label="fill exam + questions"];
+  form -> api [label="createExam(payload)"];
+  api -> auth [label="POST /api/exams + JWT"];
+  auth -> route [label="teacher authorized"];
+  route -> valid [label="validate"];
+  valid -> route [label="OK"];
+  route -> db [label="INSERT exam + JSONB questions"];
+  db -> route [label="created exam"];
+  route -> api [label="201 JSON"];
+  api -> list [label="show Draft"];
+  teacher -> list [label="click Publish"];
+  list -> api [label="PUT /exams/:id {status: published}"];
+  api -> auth -> route;
+  route -> db [label="UPDATE status"];
+  db -> list [label="Published exam"];
+}

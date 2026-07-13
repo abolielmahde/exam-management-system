@@ -1,3 +1,5 @@
+# בניית Frontend בשני שלבים: Build של Vite ולאחר מכן שרת סטטי קטן ל-Production.
+# שלב 1: בניית קובצי Production של React.
 FROM node:20-alpine AS build
 WORKDIR /app
 ENV NODE_ENV=development
@@ -7,8 +9,10 @@ COPY package.json ./
 RUN npm install --no-audit --no-fund
 COPY index.html ./
 COPY src ./src
+# Vite יוצר את תיקיית dist.
 RUN npm run build
 
+# שלב 2: Image קטן שמגיש רק את תיקיית dist.
 FROM node:20-alpine
 WORKDIR /app
 RUN npm install -g serve@14.2.3 --no-audit --no-fund

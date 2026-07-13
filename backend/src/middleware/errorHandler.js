@@ -1,10 +1,14 @@
-export function notFound(req, res) {
-  res.status(404).json({ message: 'Route not found' });
-}
-
+/**
+ * Middleware מרכזי לטיפול ב-404 ובשגיאות שרת לא צפויות.
+ * ההערות בקובץ מסבירות את הזרימה וההחלטות המרכזיות בפרויקט.
+ */
+// מחזיר 404 כאשר לא נמצא Endpoint מתאים.
+export const notFound = (req, res) =>
+  res.status(404).json({ message: "Route not found" });
+// לוכד שגיאות לא צפויות ומונע חשיפת פרטים פנימיים ל-Client.
 export function errorHandler(error, req, res, next) {
-  console.error('[API ERROR]', error);
-  const status = error.status || 500;
-  const message = status === 500 ? 'Internal server error' : error.message;
-  res.status(status).json({ message });
+  console.error(error);
+  res
+    .status(error.status || 500)
+    .json({ message: error.status ? error.message : "Internal server error" });
 }

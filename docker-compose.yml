@@ -1,7 +1,9 @@
+# הפעלת שלושת חלקי המערכת יחד: PostgreSQL, Backend ו-Frontend.
+# הערכים בקובץ מיועדים לפיתוח מקומי; בענן משתמשים ב-Secrets אמיתיים.
 services:
+  # בסיס הנתונים הקבוע של המערכת.
   postgres:
     image: postgres:16-alpine
-    container_name: exam-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: exam_management
@@ -11,21 +13,23 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    # בודק ש-PostgreSQL מוכן לפני שה-Backend מתחיל.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U exam_user -d exam_management"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+  # שרת REST API ב-Node.js ו-Express.
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: exam-backend
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
+    # קונפיגורציה שמועברת לשרת כ-Environment Variables.
     environment:
       PORT: 5001
       NODE_ENV: production
@@ -37,18 +41,19 @@ services:
     ports:
       - "5001:5001"
 
+  # אפליקציית React שנבנית באמצעות Vite ומוגשת בפורט 4173.
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
         VITE_API_BASE_URL: http://localhost:5001/api
-    container_name: exam-frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports:
       - "4173:4173"
 
+# Volume שומר את נתוני PostgreSQL גם לאחר עצירת Containers.
 volumes:
   postgres-data:

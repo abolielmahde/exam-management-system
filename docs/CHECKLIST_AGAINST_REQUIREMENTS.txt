@@ -1,30 +1,11 @@
-Checklist Against Lecturer Requirements
-=======================================
-
-Required by lecturer                         Status in this version
-------------------------------------------------------------------
-Frontend application                         DONE - React + Vite
-Backend API                                  DONE - Node.js + Express REST API
-Database integration                         DONE - PostgreSQL
-Authentication and authorization             DONE - JWT + bcrypt + role middleware
-Persistent data storage                      DONE - PostgreSQL tables
-Deployment to cloud/server environment       READY - Docker + env variables + deployment guide
-Create and manage exams                      DONE
-Add and edit questions                       DONE - create/add question types; edit via API support
-Manage question types                        DONE - multiple-choice, true-false, open-text
-Publish exams                                DONE
-Review student submissions                   DONE
-Grade exams and publish results              DONE - auto grade + manual grade/feedback/publish
-Student login                                DONE
-Student view available exams                 DONE
-Student enter exam and submit answers        DONE
-Student view grades and feedback             DONE
-Architecture and database diagrams           DONE - docs folder
-Documentation                                DONE - README + docs
-Git-based development workflow               DONE - GitHub Actions CI/CD workflow
-Added features beyond minimal requirements   DONE - analytics, timer, Docker, CI/CD, feedback
-Security and validation concepts             DONE - SECURITY_NOTES + backend validators
-
-Latest frontend update:
-- Added Edit Exam / Edit Questions button in the teacher My Exams page.
-- The edit flow loads an existing exam, allows editing exam details and all questions, and saves changes through the PUT /api/exams/:id backend endpoint.
+Frontend: DONE
+Backend API: DONE
+PostgreSQL database: DONE
+JWT authentication and role authorization: DONE
+Persistent storage: DONE
+Create/edit/publish/close exams: DONE
+Edit Exam / Questions frontend button: DONE
+Submissions, grades and feedback: DONE
+Docker Compose: DONE
+GitHub Actions: DONE
+Architecture, ERD and use-case diagrams: DONE
